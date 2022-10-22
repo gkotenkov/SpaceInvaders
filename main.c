@@ -1629,6 +1629,7 @@ int main() {
     PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
     SetTimer(hwnd, 2, 250, NULL);
     SetTimer(hwnd, 3, 10, NULL);
+    int counter = 0;
 
 	MSG msg;
 	while (1) {
