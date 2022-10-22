@@ -1591,7 +1591,6 @@ void YouLose(RECT* rct){
 }
 
 LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
-int counter = 0;
 
 int main() {
 
