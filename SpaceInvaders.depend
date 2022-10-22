@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1665663651 source:c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders\constants.c
+
+1666279200 source:c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders\main.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<time.h>
+	<Windows.h>
+
+1665663651 c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders\constants.c
+
+1665744493 source:c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders\basic.types.c
+
+1665744510 source:c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders\entities.c
+
+1665744518 source:c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders\helpers.c
+
+1665744493 source:c:\source\codeblockssource\spaceinvaders\basic.types.c
+
+1665744510 source:c:\source\codeblockssource\spaceinvaders\entities.c
+
+1665744518 source:c:\source\codeblockssource\spaceinvaders\helpers.c
+
+1666384215 source:c:\source\codeblockssource\spaceinvaders\main.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<time.h>
+	<Windows.h>
+

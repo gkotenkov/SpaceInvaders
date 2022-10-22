@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1666367333 source:c:\users\vereg\onedrive\Документы\codeblockssource\spaceinvaders_release_1.0\main.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<time.h>
+	<Windows.h>
+
+1666380989 source:c:\source\codeblockssource\spaceinvaders_release_1.0\main.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<time.h>
+	<Windows.h>
+
