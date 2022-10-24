@@ -200,14 +200,15 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->color = PlayerColor;
         obj->size = GetObjectPosition(ps.width, ps.height);
         obj->playerScore = 0;
-        obj->lifesRested = 10;
+        obj->lifesRested = 20;
+        obj->animationController = 0;
         break;
     case 2:
         obj->levelInitMoveStatus = FALSE;
         obj->lifesRested = 1;
         obj->color = EnemyColor;
         obj->size = GetObjectPosition(es.width, es.height);
-        obj->basicSpeed = 2;
+        obj->basicSpeed = 8;
         obj->destController = 1;
         obj->animationController = 1;
         break;
@@ -216,17 +217,17 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->lifesRested = 1;
         obj->color = EnemyColor;
         obj->size = GetObjectPosition(es.width, es.height);
-        obj->basicSpeed = 2;
+        obj->basicSpeed = 8;
         obj->destController = 1;
         obj->animationController = 1;
         break;
     case 3:
-        obj->basicSpeed = 1*player.levelStatus;
+        obj->basicSpeed = 6*player.levelStatus;
         obj->color = EnemyBulletColor;
         obj->size = GetObjectPosition(pbs.width, pbs.height);
         break;
     case 1:
-        obj->basicSpeed = 4;
+        obj->basicSpeed = 16;
         obj->color = PlayerBulletColor;
         obj->size = GetObjectPosition(ebs.width, ebs.height);
         break;
@@ -234,13 +235,14 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->color = EnemyBulletColor;
         obj->size = GetObjectPosition(32, 1);
         obj->objectDeliting = FALSE;
+        obj->basicSpeed = 12;
         break;
     case 6:
         obj->levelInitMoveStatus = FALSE;
         obj->lifesRested = 5;
         obj->color = RGB(200, 200, 200);
         obj->size = GetObjectPosition(es.width, es.height);
-        obj->basicSpeed = 2;
+        obj->basicSpeed = 8;
         obj->destController = 1;
         obj->animationController = 1;
         break;
@@ -249,7 +251,7 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->lifesRested = 30;
         obj->color = RGB(200, 200, 200);
         obj->size = GetObjectPosition(416, 192);
-        obj->basicSpeed = 2;
+        obj->basicSpeed = 8;
         obj->destController = 1;
         obj->animationController = -1;
         break;
@@ -436,7 +438,7 @@ void WinInit() {
 }
 
 void PlayerControl(){
-    static float playerSpeed = 2;
+    static float playerSpeed = 12;
     player.speed.x = 0;
     player.speed.y = 0;
     if (GetKeyState('A') < 0 && player.position.x >= 4){
@@ -513,6 +515,10 @@ void ObjectMove(AnyObject *obj){
         }
         switch(obj->objectType){
         case 0:
+            if (obj->animationController <= 0 || obj->animationController >=128){
+                obj->position.x+=obj->speed.x;
+                obj->position.y+=obj->speed.y;
+            }
             break;
         case 2:
             if (obj->levelInitMoveStatus == FALSE){
@@ -535,6 +541,8 @@ void ObjectMove(AnyObject *obj){
                 AddBullet((obj->position.x+obj->size.x/2-ebs.width/2), (obj->position.y), 3);
                 }
             }
+            obj->position.x+=obj->speed.x;
+            obj->position.y+=obj->speed.y;
             break;
         case 4:
             if (obj->levelInitMoveStatus == FALSE){
@@ -563,6 +571,8 @@ void ObjectMove(AnyObject *obj){
                     }
                 }
             }
+            obj->position.x+=obj->speed.x;
+            obj->position.y+=obj->speed.y;
             break;
         case 1:
             obj->shootRange-=obj->vecSpeed;
@@ -583,17 +593,19 @@ void ObjectMove(AnyObject *obj){
                         }
                     }
                 }
+            obj->position.x+=obj->speed.x;
+            obj->position.y+=obj->speed.y;
             break;
         case 3:
             obj->shootRange-=obj->vecSpeed;
                 if (obj->shootRange < 0){
                     obj->shouldBeDeleted = TRUE;
-                    printf("%d\n", ObjectArrayCounter);
                 }
                 ObjectSetDestPoint(obj, obj->position.x, obj->position.y+650, obj->basicSpeed);
 
-                if (ObjectCollision(*obj, player)) {
+                if (ObjectCollision(*obj, player) && player.animationController <= 0 ) {
                     player.lifesRested--;
+                    player.animationController = 1;
                     obj->shouldBeDeleted = TRUE;
                     if (player.lifesRested <= 0) {
                         player.levelStatus = 0;
@@ -601,13 +613,16 @@ void ObjectMove(AnyObject *obj){
                     }
                 }
 
-            break;
+                obj->position.x+=obj->speed.x;
+                obj->position.y+=obj->speed.y;
+                break;
             case 5:
                 if (obj->size.x <=0) obj->shouldBeDeleted = TRUE;
 
                 if (!obj->objectDeliting) {
-                    if (ObjectCollision(*obj, player)) {
+                    if (ObjectCollision(*obj, player) && player.animationController <= 0) {
                         player.lifesRested--;
+                        player.animationController = 1;
                         obj->objectDeliting = TRUE;
                         if (player.lifesRested <= 0) {
                             player.levelStatus = 0;
@@ -621,7 +636,9 @@ void ObjectMove(AnyObject *obj){
                     obj->position.x += 0.1;
                 }
 
-            break;
+                obj->position.x+=obj->speed.x;
+                obj->position.y+=obj->speed.y;
+                break;
             case 6:
                 if (obj->levelInitMoveStatus == FALSE){
                     ObjectSetDestPoint(obj, obj->position.x+obj->initSide, obj->position.y, obj->basicSpeed);
@@ -635,6 +652,8 @@ void ObjectMove(AnyObject *obj){
                         levelInitMoveStatus = TRUE;
                     }
                 }
+                obj->position.x+=obj->speed.x;
+                obj->position.y+=obj->speed.y;
                 break;
             case 7:
                 if (obj->lifesRested > 0){
@@ -655,7 +674,6 @@ void ObjectMove(AnyObject *obj){
                         }
 
                         if (obj->vecSpeed == obj->basicSpeed/4){
-                            printf("%f\n", obj->position.x);
                             int shootingIndicator = rand()%(3000);
                                 switch(shootingIndicator){
                                 case 0:
@@ -698,11 +716,11 @@ void ObjectMove(AnyObject *obj){
                         }
                     }
                 }
+                obj->position.x+=obj->speed.x;
+                obj->position.y+=obj->speed.y;
                 break;
-        }
+            }
 
-        obj->position.x+=obj->speed.x;
-        obj->position.y+=obj->speed.y;
         }
 
 }
@@ -714,6 +732,69 @@ void WinMove(){
     DeleteArrayObject();
 }
 
+void DrawPlayer(HDC hdc, AnyObject obj) {
+    SelectObject(hdc, GetStockObject(DC_BRUSH));
+            SetDCBrushColor(hdc, obj.color);
+
+            POINT PlayerWingsShape[18] = {
+                {obj.position.x, obj.position.y+40},
+                {obj.position.x+8, obj.position.y+48},
+                {obj.position.x+24, obj.position.y+40},
+                {obj.position.x+32, obj.position.y+40},
+                {obj.position.x+48, obj.position.y+32},
+                {obj.position.x+80, obj.position.y+32},
+                {obj.position.x+96, obj.position.y+40},
+                {obj.position.x+104, obj.position.y+40},
+                {obj.position.x+120, obj.position.y+48},
+                {obj.position.x+128, obj.position.y+40},
+                {obj.position.x+128, obj.position.y+48},
+                {obj.position.x+120, obj.position.y+56},
+                {obj.position.x+88, obj.position.y+56},
+                {obj.position.x+72, obj.position.y+48},
+                {obj.position.x+56, obj.position.y+48},
+                {obj.position.x+40, obj.position.y+56},
+                {obj.position.x+8, obj.position.y+56},
+                {obj.position.x, obj.position.y+48},
+                };
+            Polygon(hdc, PlayerWingsShape, 18);
+            DeleteObject(PlayerWingsShape);
+
+            SetDCBrushColor(hdc, RGB(18, 240, 217));
+            POINT PlayerBodyShape[15] = {
+                {obj.position.x+56, obj.position.y},
+                {obj.position.x+56, obj.position.y+16},
+                {obj.position.x+64, obj.position.y+8},
+                {obj.position.x+72, obj.position.y+16},
+                {obj.position.x+72, obj.position.y},
+                {obj.position.x+80, obj.position.y+8},
+                {obj.position.x+80, obj.position.y+16},
+                {obj.position.x+72, obj.position.y+32},
+                {obj.position.x+72, obj.position.y+56},
+                {obj.position.x+80, obj.position.y+64},
+                {obj.position.x+48, obj.position.y+64},
+                {obj.position.x+56, obj.position.y+56},
+                {obj.position.x+56, obj.position.y+32},
+                {obj.position.x+48, obj.position.y+16},
+                {obj.position.x+48, obj.position.y+8},
+                };
+            Polygon(hdc, PlayerBodyShape, 15);
+
+            POINT PlayerEngineShape_Left[4] = {
+                {obj.position.x+32, obj.position.y+16},
+                {obj.position.x+32, obj.position.y+64},
+                {obj.position.x+24, obj.position.y+56},
+                {obj.position.x+24, obj.position.y+24},
+                };
+            Polygon(hdc, PlayerEngineShape_Left, 4);
+
+            POINT PlayerEngineShape_Right[4] = {
+                {obj.position.x+96, obj.position.y+16},
+                {obj.position.x+96, obj.position.y+64},
+                {obj.position.x+104, obj.position.y+56},
+                {obj.position.x+104, obj.position.y+24},
+                };
+            Polygon(hdc, PlayerEngineShape_Right, 4);
+}
 
 void DrawObject(AnyObject obj, HDC hdc) {
 
@@ -866,7 +947,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
                 SetDCBrushColor(hdc, RGB(0, 255, 0));
                 Rectangle(hdc, 395, 0, 885, 30);
                 SetDCBrushColor(hdc, RGB(255, 0, 0));
-                Rectangle(hdc, 400, 5, 880, 25);
+                Rectangle(hdc, 400, 5, 400+8*obj.lifesRested, 25);
             }
 
             if (obj.lifesRested > 24){
@@ -916,67 +997,108 @@ void DrawObject(AnyObject obj, HDC hdc) {
             }
         break;
     case 0:
-        SelectObject(hdc, GetStockObject(DC_BRUSH));
-        SetDCBrushColor(hdc, obj.color);
+        if (obj.animationController <= 0 ) {
+            DrawPlayer(hdc, obj);
 
-        POINT PlayerWingsShape[18] = {
-            {obj.position.x, obj.position.y+40},
-            {obj.position.x+8, obj.position.y+48},
-            {obj.position.x+24, obj.position.y+40},
-            {obj.position.x+32, obj.position.y+40},
-            {obj.position.x+48, obj.position.y+32},
-            {obj.position.x+80, obj.position.y+32},
-            {obj.position.x+96, obj.position.y+40},
-            {obj.position.x+104, obj.position.y+40},
-            {obj.position.x+120, obj.position.y+48},
-            {obj.position.x+128, obj.position.y+40},
-            {obj.position.x+128, obj.position.y+48},
-            {obj.position.x+120, obj.position.y+56},
-            {obj.position.x+88, obj.position.y+56},
-            {obj.position.x+72, obj.position.y+48},
-            {obj.position.x+56, obj.position.y+48},
-            {obj.position.x+40, obj.position.y+56},
-            {obj.position.x+8, obj.position.y+56},
-            {obj.position.x, obj.position.y+48},
-            };
-        Polygon(hdc, PlayerWingsShape, 18);
-        DeleteObject(PlayerWingsShape);
+        } else if (obj.animationController > 0 && obj.animationController < 64){
 
-        SetDCBrushColor(hdc, RGB(18, 240, 217));
-        POINT PlayerBodyShape[15] = {
-            {obj.position.x+56, obj.position.y},
-            {obj.position.x+56, obj.position.y+16},
-            {obj.position.x+64, obj.position.y+8},
-            {obj.position.x+72, obj.position.y+16},
-            {obj.position.x+72, obj.position.y},
-            {obj.position.x+80, obj.position.y+8},
-            {obj.position.x+80, obj.position.y+16},
-            {obj.position.x+72, obj.position.y+32},
-            {obj.position.x+72, obj.position.y+56},
-            {obj.position.x+80, obj.position.y+64},
-            {obj.position.x+48, obj.position.y+64},
-            {obj.position.x+56, obj.position.y+56},
-            {obj.position.x+56, obj.position.y+32},
-            {obj.position.x+48, obj.position.y+16},
-            {obj.position.x+48, obj.position.y+8},
-            };
-        Polygon(hdc, PlayerBodyShape, 15);
+            player.speed.x = 0;
+            SelectObject(hdc, GetStockObject(DC_BRUSH));
+            SetDCBrushColor(hdc, RGB(255, 255, 255));
 
-        POINT PlayerEngineShape_Left[4] = {
-            {obj.position.x+32, obj.position.y+16},
-            {obj.position.x+32, obj.position.y+64},
-            {obj.position.x+24, obj.position.y+56},
-            {obj.position.x+24, obj.position.y+24},
-            };
-        Polygon(hdc, PlayerEngineShape_Left, 4);
+            Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController,  obj.position.y+obj.size.y/2-obj.animationController,
+                    obj.position.x+obj.size.x/2+obj.animationController,  obj.position.y+obj.size.y/2+obj.animationController);
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+            if (obj.animationController > 16){
 
-        POINT PlayerEngineShape_Right[4] = {
-            {obj.position.x+96, obj.position.y+16},
-            {obj.position.x+96, obj.position.y+64},
-            {obj.position.x+104, obj.position.y+56},
-            {obj.position.x+104, obj.position.y+24},
-            };
-        Polygon(hdc, PlayerEngineShape_Right, 4);
+                SetDCBrushColor(hdc, RGB(255, 255, 0));
+
+                Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+16,  obj.position.y+obj.size.y/2-obj.animationController+16,
+                    obj.position.x+obj.size.x/2+obj.animationController-16,  obj.position.y+obj.size.y/2+obj.animationController-16);
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+
+            }
+            if (obj.animationController > 32) {
+
+                SetDCBrushColor(hdc, RGB(255, 128, 0));
+
+                Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+32,  obj.position.y+obj.size.y/2-obj.animationController+32,
+                    obj.position.x+obj.size.x/2+obj.animationController-32,  obj.position.y+obj.size.y/2+obj.animationController-32);
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+            }
+            if (obj.animationController > 48) {
+
+                SetDCBrushColor(hdc, RGB(255, 0, 0));
+
+                Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+48,  obj.position.y+obj.size.y/2-obj.animationController+48,
+                    obj.position.x+obj.size.x/2+obj.animationController-48,  obj.position.y+obj.size.y/2+obj.animationController-48);
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+            }
+
+        } else if (obj.animationController >= 64 && obj.animationController < 128) {
+
+            player.speed.x = 0;
+            SelectObject(hdc, GetStockObject(DC_BRUSH));
+            SetDCBrushColor(hdc, RGB(255, 255, 255));
+            Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController),  obj.position.y+obj.size.y/2-(128-obj.animationController),
+                    obj.position.x+obj.size.x/2+(128-obj.animationController),  obj.position.y+obj.size.y/2+(128-obj.animationController));
+            player.animationController++;
+
+            if (obj.animationController > 80){
+
+                SetDCBrushColor(hdc, RGB(255, 255, 0));
+
+                Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-16),  obj.position.y+obj.size.y/2-(128-obj.animationController-16),
+                    obj.position.x+obj.size.x/2+(128-obj.animationController-16),  obj.position.y+obj.size.y/2+(128-obj.animationController-16));
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+
+            }
+            if (obj.animationController > 96) {
+
+                SetDCBrushColor(hdc, RGB(255, 128, 0));
+
+                Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-32),  obj.position.y+obj.size.y/2-(128-obj.animationController-32),
+                    obj.position.x+obj.size.x/2+(128-obj.animationController-32),  obj.position.y+obj.size.y/2+(128-obj.animationController-32));
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+            }
+            if (obj.animationController > 112) {
+
+                SetDCBrushColor(hdc, RGB(255, 0, 0));
+
+                Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-48),  obj.position.y+obj.size.y/2-(128-obj.animationController-48),
+                    obj.position.x+obj.size.x/2+(128-obj.animationController-48),  obj.position.y+obj.size.y/2+(128-obj.animationController-48));
+                    player.animationController++;
+                    printf("%d\n", obj.animationController);
+            }
+
+            printf("%d\n", obj.animationController);
+
+        } else if (obj.animationController >= 128 && obj.animationController < 512) {
+
+            if(obj.animationController < 150) player.position.x = 576;
+
+            int blink = obj.animationController;
+            if ((blink > 192 && blink < 224) ||
+                (blink > 256 && blink < 288) ||
+                (blink > 320 && blink < 352) ||
+                (blink > 384 && blink < 416) ||
+                (blink > 448 && blink < 480)){
+
+                DrawPlayer(hdc, obj);
+            }
+            player.animationController++;
+
+        } else if (obj.animationController >= 512){
+            player.animationController = 0;
+            printf("%d\n", obj.animationController);
+        }
+            DeleteObject(DC_PEN);
 
 
         break;
@@ -1613,8 +1735,8 @@ int main() {
 	hwnd = CreateWindow(
 		"MyWindow",
 		"SpaceInvaders",
-		WS_OVERLAPPEDWINDOW,
-		360, 180, 1298, 767,
+		WS_OVERLAPPEDWINDOW & ~WS_THICKFRAME,
+		360, 180, 1280, 720,
 		NULL, NULL, NULL, NULL
 	);
 
@@ -1628,7 +1750,6 @@ int main() {
     PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
     SetTimer(hwnd, 2, 250, NULL);
     SetTimer(hwnd, 3, 10, NULL);
-    int counter = 0;
 
 	MSG msg;
 	while (1) {
@@ -1647,7 +1768,6 @@ int main() {
                 YouLose(&rct);
                 if (GameIsOn){
                     WinShow(dc, &brush, &BM);
-                    WinMove();
                 }
             }
             ReleaseDC(hwnd, dc);
@@ -1660,7 +1780,7 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
     case WM_TIMER:
         if(wParam == 1) {
-            if (GameIsOn && levelInitMoveStatus){
+            if (GameIsOn && levelInitMoveStatus && player.animationController <= 0){
                         AddBullet(player.position.x+player.size.x/2-8, player.position.y-16, 1);
             }
         }
@@ -1668,6 +1788,19 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
             MouseShootingIndicator = TRUE;
         }
         if (wParam == 3) {
+            if (GameIsOn){
+                WinMove();
+                }
+        }
+        break;
+    case WM_SYSCOMMAND:
+        switch (wParam) {
+        case SC_MAXIMIZE:
+            OnOffFullScreen();
+            break;
+        default:
+            return DefWindowProcA(hwnd, message, wParam, lParam);
+            break;
         }
         break;
     case WM_SIZE:
@@ -1740,18 +1873,6 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
             MainMenuIndicator = TRUE;
             DestroyWindow(YouLoseButton_MainMenu);
             break;
-
-
-
-        /*case ScoreTextWindow_id: ;
-
-            char ScoreIdString[20];
-            sprintf(ScoreIdString, "SCORE: %d", player.playerScore);
-
-            if(HIWORD(lParam) == EN_UPDATE){
-                SetWindowText(ScoreTextWindow, ScoreIdString);
-            }
-            break;*/
         default:
 
             break;
@@ -1759,8 +1880,7 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
         break;
     case WM_LBUTTONDOWN:
         if(GameIsOn){
-            if (levelInitMoveStatus && !ShootingIndicator && MouseShootingIndicator){
-                    //CreateThread(NULL, 0, AddBullet, (player.position.x+player.size.x/2-10, player.position.y-10, 1), 0, NULL );
+            if (levelInitMoveStatus && !ShootingIndicator && MouseShootingIndicator && player.animationController <= 0){
                     AddBullet(player.position.x+player.size.x/2-8, player.position.y-16, 1);
                     MouseShootingIndicator = FALSE;
             }
