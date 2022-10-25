@@ -13,3 +13,17 @@
 	<time.h>
 	<Windows.h>
 
+1666692244 source:c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.c
+
+1666692183 c:\source\codeblockssource\spaceinvaders_release_1.0\main.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
+	<time.h>
+	<Windows.h>
+	"draw.helpers.c"
+
+1666692099 c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.c
+	<windows.h>
+	"main.c"
+
