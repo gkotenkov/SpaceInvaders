@@ -17,7 +17,7 @@ Features:
 	}
 Refactoring:
 	{
-	1. 
+	1. Refactor objects type in enum way
 	}
 Balance:
 	{

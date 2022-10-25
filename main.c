@@ -70,7 +70,7 @@ typedef struct AnyObjectProperties {
     float shootRange;
     BOOL shouldBeDeleted;
     BOOL levelInitMoveStatus;
-    int playerScore;
+    int PlayerScore;
     int destController;
     int animationController;
     BOOL objectDeliting;
@@ -97,6 +97,19 @@ typedef const struct EnemyBulletSize {
     float width;
     float height;
 } EBS;
+
+typedef enum ObjectTypes {
+    player = 0,
+    playerBullet = 1,
+    simpleInvader = 2,
+    simpleInvaderBullet = 3,
+    laserShooter = 4,
+    laserShooterBullet = 5,
+    shieldInvader = 6,
+    motherShip = 7
+} ObjType;
+
+ObjType type;
 
 const PS ps = {128, 64};
 const ES es = {128, 64};
@@ -139,7 +152,7 @@ int BossDeathBOOM = 0;
 int OpeningLoading = 435;
 
 
-AnyObject player;
+AnyObject Player;
 
 RECT rct;
 
@@ -195,15 +208,15 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
 	obj->shouldBeDeleted = FALSE;
 
 	switch(objectType){
-    case 0:
+    case player:
         obj->levelStatus = 0;
         obj->color = PlayerColor;
         obj->size = GetObjectPosition(ps.width, ps.height);
-        obj->playerScore = 0;
+        obj->PlayerScore = 0;
         obj->lifesRested = 20;
         obj->animationController = 0;
         break;
-    case 2:
+    case simpleInvader:
         obj->levelInitMoveStatus = FALSE;
         obj->lifesRested = 1;
         obj->color = EnemyColor;
@@ -212,7 +225,7 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->destController = 1;
         obj->animationController = 1;
         break;
-    case 4:
+    case laserShooter:
         obj->levelInitMoveStatus = FALSE;
         obj->lifesRested = 1;
         obj->color = EnemyColor;
@@ -221,23 +234,23 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->destController = 1;
         obj->animationController = 1;
         break;
-    case 3:
-        obj->basicSpeed = 6*player.levelStatus;
+    case simpleInvaderBullet:
+        obj->basicSpeed = 6*Player.levelStatus;
         obj->color = EnemyBulletColor;
         obj->size = GetObjectPosition(pbs.width, pbs.height);
         break;
-    case 1:
+    case playerBullet:
         obj->basicSpeed = 16;
         obj->color = PlayerBulletColor;
         obj->size = GetObjectPosition(ebs.width, ebs.height);
         break;
-    case 5:
+    case laserShooterBullet:
         obj->color = EnemyBulletColor;
         obj->size = GetObjectPosition(32, 1);
         obj->objectDeliting = FALSE;
         obj->basicSpeed = 12;
         break;
-    case 6:
+    case shieldInvader:
         obj->levelInitMoveStatus = FALSE;
         obj->lifesRested = 5;
         obj->color = RGB(200, 200, 200);
@@ -246,7 +259,7 @@ void InitObject(AnyObject* obj, float x, float y, int objectType) {
         obj->destController = 1;
         obj->animationController = 1;
         break;
-    case 7:
+    case motherShip:
         obj->levelInitMoveStatus = FALSE;
         obj->lifesRested = 30;
         obj->color = RGB(200, 200, 200);
@@ -283,13 +296,13 @@ void ObjectSetDestPoint(AnyObject* obj, float xPos, float yPos, float vecSpeed){
 
 void InitLevel_1() {
     levelInitMoveStatus = FALSE;
-    player.levelStatus = 1;
-    player.position.x = 576;
+    Player.levelStatus = 1;
+    Player.position.x = 576;
 
     int x = -192;
     int y = 64;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x -= 256;
     }
 
@@ -297,21 +310,21 @@ void InitLevel_1() {
     y = 192;
 
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x += 256;
     }
 
     x = -192;
     y = 320;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x -= 256;
     }
 
     x = 1344;
     y = 448;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x += 256;
     }
 
@@ -325,12 +338,12 @@ void InitLevel_1() {
 void InitLevel_2() {
 
     levelInitMoveStatus = FALSE;
-    player.levelStatus = 2;
-    player.position.x = 576;
+    Player.levelStatus = 2;
+    Player.position.x = 576;
     int x = -192;
     int y = 64;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x -= 256;
     }
 
@@ -338,21 +351,21 @@ void InitLevel_2() {
     y = 192;
 
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x += 256;
     }
 
     x = -192;
     y = 320;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 4);
+        InitObject(NewArrayObject(), x, y, laserShooter);
         x -= 256;
     }
 
     x = 1280;
     y = 448;
     for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, 6);
+        InitObject(NewArrayObject(), x, y, shieldInvader);
         x += 128;
     }
 
@@ -366,13 +379,13 @@ void InitLevel_2() {
 void InitLevel_3() {
 
     levelInitMoveStatus = FALSE;
-    player.levelStatus = 3;
-    player.position.x = 576;
+    Player.levelStatus = 3;
+    Player.position.x = 576;
 
     int x = -192;
     int y = 64;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 4);
+        InitObject(NewArrayObject(), x, y, laserShooter);
         x -= 256;
     }
 
@@ -380,35 +393,35 @@ void InitLevel_3() {
     y = 148;
 
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x += 256;
     }
 
     x = -128;
     y = 232;
     for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, 6);
+        InitObject(NewArrayObject(), x, y, shieldInvader);
         x -= 128;
     }
 
     x = 1344;
     y = 316;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 4);
+        InitObject(NewArrayObject(), x, y, laserShooter);
         x += 256;
     }
 
     x = -192;
     y = 400;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, 2);
+        InitObject(NewArrayObject(), x, y, simpleInvader);
         x -= 256;
     }
 
     x = 1280;
     y = 484;
     for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, 6);
+        InitObject(NewArrayObject(), x, y, shieldInvader);
         x += 128;
     }
 
@@ -421,10 +434,10 @@ void InitLevel_3() {
 void InitLevel_4() {
 
     levelInitMoveStatus = FALSE;
-    player.levelStatus = 4;
-    player.position.x = 576;
+    Player.levelStatus = 4;
+    Player.position.x = 576;
 
-    InitObject(NewArrayObject(), -544, 100, 7);
+    InitObject(NewArrayObject(), -544, 100, motherShip);
 
     lvl_DrawAbility = 4;
     WinShow(dc, &brush, &BM);
@@ -433,26 +446,26 @@ void InitLevel_4() {
 }
 
 void WinInit() {
-	InitObject(&player, ((rct.right-rct.left))/2-64, PlayerPositionY, 0);
+	InitObject(&Player, ((rct.right-rct.left))/2-64, PlayerPositionY, player);
 	InitLevel_1();
 }
 
 void PlayerControl(){
-    static float playerSpeed = 12;
-    player.speed.x = 0;
-    player.speed.y = 0;
-    if (GetKeyState('A') < 0 && player.position.x >= 4){
-        player.speed.x = -playerSpeed;
+    static float PlayerSpeed = 12;
+    Player.speed.x = 0;
+    Player.speed.y = 0;
+    if (GetKeyState('A') < 0 && Player.position.x >= 4){
+        Player.speed.x = -PlayerSpeed;
     }
-    if (GetKeyState('D') < 0 && player.position.x <= 1132){
-        player.speed.x = playerSpeed;
+    if (GetKeyState('D') < 0 && Player.position.x <= 1132){
+        Player.speed.x = PlayerSpeed;
     }
 }
 
 
 void LevelControl(){
 
-    switch(player.levelStatus){
+    switch(Player.levelStatus){
     case 0:
         GameIsOn = FALSE;
         YouLoseIndicator = TRUE;
@@ -483,7 +496,7 @@ void LevelControl(){
         break;
     case 4:
             GameIsOn = FALSE;
-            player.levelStatus = 5;
+            Player.levelStatus = 5;
             WinShow(dc, &brush, &BM);
             LevelControl();
         break;
@@ -514,13 +527,13 @@ void ObjectMove(AnyObject *obj){
             obj->initSide = -1;
         }
         switch(obj->objectType){
-        case 0:
+        case player:
             if (obj->animationController <= 0 || obj->animationController >=128){
                 obj->position.x+=obj->speed.x;
                 obj->position.y+=obj->speed.y;
             }
             break;
-        case 2:
+        case simpleInvader:
             if (obj->levelInitMoveStatus == FALSE){
                 ObjectSetDestPoint(obj, obj->position.x+1*obj->initSide, obj->position.y, obj->basicSpeed);
                 obj->levelInitMoveStatus = TRUE;
@@ -536,15 +549,15 @@ void ObjectMove(AnyObject *obj){
                 }
             }
             if (obj->vecSpeed == obj->basicSpeed/4){
-                int shootingIndicator = rand()%(9000/player.levelStatus);
+                int shootingIndicator = rand()%(1200/Player.levelStatus);
                 if (!shootingIndicator){
-                AddBullet((obj->position.x+obj->size.x/2-ebs.width/2), (obj->position.y), 3);
+                AddBullet((obj->position.x+obj->size.x/2-ebs.width/2), (obj->position.y), simpleInvaderBullet);
                 }
             }
             obj->position.x+=obj->speed.x;
             obj->position.y+=obj->speed.y;
             break;
-        case 4:
+        case laserShooter:
             if (obj->levelInitMoveStatus == FALSE){
                 ObjectSetDestPoint(obj, obj->position.x+obj->initSide, obj->position.y, obj->basicSpeed);
                 obj->levelInitMoveStatus = TRUE;
@@ -555,12 +568,12 @@ void ObjectMove(AnyObject *obj){
                         obj->speed.x =0;
                         obj->speed.y =0;
                     levelInitMoveStatus = TRUE;
-                    int shootingIndicator = rand()%(9000/player.levelStatus);
+                    int shootingIndicator = rand()%(9000/Player.levelStatus);
                     if (!shootingIndicator){
                         obj->animationController = -1;
 
                         obj->destController = 0;
-                        AddBullet((obj->position.x+48), (obj->position.y+obj->size.y), 5);
+                        AddBullet((obj->position.x+48), (obj->position.y+obj->size.y), laserShooterBullet);
                 }
             }
             if (obj->destController >=0){
@@ -574,20 +587,23 @@ void ObjectMove(AnyObject *obj){
             obj->position.x+=obj->speed.x;
             obj->position.y+=obj->speed.y;
             break;
-        case 1:
+        case playerBullet:
             obj->shootRange-=obj->vecSpeed;
                 if (obj->shootRange < 0){
                     obj->shouldBeDeleted = TRUE;
                 }
                 ObjectSetDestPoint(obj, obj->position.x, obj->position.y-650, obj->basicSpeed);
                 for (int i = 0; i < ObjectArrayCounter; i++){
-                    if (ObjectCollision(*obj, ObjectArray[i]) && (ObjectArray[i].objectType == 7 || ObjectArray[i].objectType == 6 || ObjectArray[i].objectType == 2 || ObjectArray[i].objectType == 4)){
+                    if (ObjectCollision(*obj, ObjectArray[i]) && (ObjectArray[i].objectType == motherShip
+                                                                 || ObjectArray[i].objectType == shieldInvader
+                                                                 || ObjectArray[i].objectType == simpleInvader
+                                                                 || ObjectArray[i].objectType == laserShooter)){
                         ObjectArray[i].lifesRested--;
                         obj->shouldBeDeleted = TRUE;
-                        if(ObjectArray[i].lifesRested <= 0 && ObjectArray[i].objectType != 7){
+                        if(ObjectArray[i].lifesRested <= 0 && ObjectArray[i].objectType != motherShip){
                             ObjectArray[i].shouldBeDeleted = TRUE;
-                            player.playerScore += 100*player.levelStatus;
-                            if (player.levelStatus < 4){
+                            Player.PlayerScore += 100*Player.levelStatus;
+                            if (Player.levelStatus < 4){
                                 LevelControl();
                             }
                         }
@@ -596,19 +612,19 @@ void ObjectMove(AnyObject *obj){
             obj->position.x+=obj->speed.x;
             obj->position.y+=obj->speed.y;
             break;
-        case 3:
+        case simpleInvaderBullet:
             obj->shootRange-=obj->vecSpeed;
                 if (obj->shootRange < 0){
                     obj->shouldBeDeleted = TRUE;
                 }
                 ObjectSetDestPoint(obj, obj->position.x, obj->position.y+650, obj->basicSpeed);
 
-                if (ObjectCollision(*obj, player) && player.animationController <= 0 ) {
-                    player.lifesRested--;
-                    player.animationController = 1;
+                if (ObjectCollision(*obj, Player) && Player.animationController <= 0 ) {
+                    Player.lifesRested--;
+                    Player.animationController = 1;
                     obj->shouldBeDeleted = TRUE;
-                    if (player.lifesRested <= 0) {
-                        player.levelStatus = 0;
+                    if (Player.lifesRested <= 0) {
+                        Player.levelStatus = 0;
                         LevelControl();
                     }
                 }
@@ -616,16 +632,16 @@ void ObjectMove(AnyObject *obj){
                 obj->position.x+=obj->speed.x;
                 obj->position.y+=obj->speed.y;
                 break;
-            case 5:
+            case laserShooterBullet:
                 if (obj->size.x <=0) obj->shouldBeDeleted = TRUE;
 
                 if (!obj->objectDeliting) {
-                    if (ObjectCollision(*obj, player) && player.animationController <= 0) {
-                        player.lifesRested--;
-                        player.animationController = 1;
+                    if (ObjectCollision(*obj, Player) && Player.animationController <= 0) {
+                        Player.lifesRested--;
+                        Player.animationController = 1;
                         obj->objectDeliting = TRUE;
-                        if (player.lifesRested <= 0) {
-                            player.levelStatus = 0;
+                        if (Player.lifesRested <= 0) {
+                            Player.levelStatus = 0;
                             LevelControl();
                         }
                     }
@@ -639,7 +655,7 @@ void ObjectMove(AnyObject *obj){
                 obj->position.x+=obj->speed.x;
                 obj->position.y+=obj->speed.y;
                 break;
-            case 6:
+            case shieldInvader:
                 if (obj->levelInitMoveStatus == FALSE){
                     ObjectSetDestPoint(obj, obj->position.x+obj->initSide, obj->position.y, obj->basicSpeed);
                     obj->levelInitMoveStatus = TRUE;
@@ -655,7 +671,7 @@ void ObjectMove(AnyObject *obj){
                 obj->position.x+=obj->speed.x;
                 obj->position.y+=obj->speed.y;
                 break;
-            case 7:
+            case motherShip:
                 if (obj->lifesRested > 0){
                     if (obj->animationController < 0){
 
@@ -678,21 +694,21 @@ void ObjectMove(AnyObject *obj){
                                 switch(shootingIndicator){
                                 case 0:
                                 case 1:
-                                    AddBullet((obj->position.x+112), (obj->position.y+160), 3);
+                                    AddBullet((obj->position.x+112), (obj->position.y+160), simpleInvaderBullet);
                                     break;
                                 case 2:
                                 case 3:
-                                    AddBullet((obj->position.x+192), (obj->position.y+160), 3);
+                                    AddBullet((obj->position.x+192), (obj->position.y+160), simpleInvaderBullet);
                                     break;
                                 case 4:
                                 case 5:
-                                    AddBullet((obj->position.x+272), (obj->position.y+160), 3);
+                                    AddBullet((obj->position.x+272), (obj->position.y+160), simpleInvaderBullet);
                                     break;
                                 case 6:
                                     obj->animationController = 1;
                                     obj->speed.x = 0;
-                                    AddBullet((obj->position.x+48), (obj->position.y+208), 5);
-                                    AddBullet((obj->position.x+336), (obj->position.y+208), 5);
+                                    AddBullet((obj->position.x+48), (obj->position.y+208), laserShooterBullet);
+                                    AddBullet((obj->position.x+336), (obj->position.y+208), laserShooterBullet);
                                     break;
                                 case 7:
                                     InitObject(NewArrayObject(), -192-(rand()%5*256), 350+rand()%2*128, 2*(rand()%2+1));
@@ -727,7 +743,7 @@ void ObjectMove(AnyObject *obj){
 
 void WinMove(){
     PlayerControl();
-    ObjectMove(&player);
+    ObjectMove(&Player);
     for(int i=0; i < ObjectArrayCounter; i++) ObjectMove(ObjectArray+i);
     DeleteArrayObject();
 }
@@ -801,7 +817,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
     //BOOL (*shape)(HDC, int, int, int, int);
 
     switch (obj.objectType){
-    case 7:
+    case motherShip:
 
             SelectObject(hdc, GetStockObject(DC_BRUSH));
             SetDCBrushColor(hdc, RGB(100, 100, 100));
@@ -996,19 +1012,19 @@ void DrawObject(AnyObject obj, HDC hdc) {
                 }
             }
         break;
-    case 0:
+    case player:
         if (obj.animationController <= 0 ) {
             DrawPlayer(hdc, obj);
 
         } else if (obj.animationController > 0 && obj.animationController < 64){
 
-            player.speed.x = 0;
+            Player.speed.x = 0;
             SelectObject(hdc, GetStockObject(DC_BRUSH));
             SetDCBrushColor(hdc, RGB(255, 255, 255));
 
             Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController,  obj.position.y+obj.size.y/2-obj.animationController,
                     obj.position.x+obj.size.x/2+obj.animationController,  obj.position.y+obj.size.y/2+obj.animationController);
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
             if (obj.animationController > 16){
 
@@ -1016,7 +1032,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+16,  obj.position.y+obj.size.y/2-obj.animationController+16,
                     obj.position.x+obj.size.x/2+obj.animationController-16,  obj.position.y+obj.size.y/2+obj.animationController-16);
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
 
             }
@@ -1026,7 +1042,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+32,  obj.position.y+obj.size.y/2-obj.animationController+32,
                     obj.position.x+obj.size.x/2+obj.animationController-32,  obj.position.y+obj.size.y/2+obj.animationController-32);
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
             }
             if (obj.animationController > 48) {
@@ -1035,18 +1051,18 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+48,  obj.position.y+obj.size.y/2-obj.animationController+48,
                     obj.position.x+obj.size.x/2+obj.animationController-48,  obj.position.y+obj.size.y/2+obj.animationController-48);
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
             }
 
         } else if (obj.animationController >= 64 && obj.animationController < 128) {
 
-            player.speed.x = 0;
+            Player.speed.x = 0;
             SelectObject(hdc, GetStockObject(DC_BRUSH));
             SetDCBrushColor(hdc, RGB(255, 255, 255));
             Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController),  obj.position.y+obj.size.y/2-(128-obj.animationController),
                     obj.position.x+obj.size.x/2+(128-obj.animationController),  obj.position.y+obj.size.y/2+(128-obj.animationController));
-            player.animationController++;
+            Player.animationController++;
 
             if (obj.animationController > 80){
 
@@ -1054,7 +1070,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-16),  obj.position.y+obj.size.y/2-(128-obj.animationController-16),
                     obj.position.x+obj.size.x/2+(128-obj.animationController-16),  obj.position.y+obj.size.y/2+(128-obj.animationController-16));
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
 
             }
@@ -1064,7 +1080,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-32),  obj.position.y+obj.size.y/2-(128-obj.animationController-32),
                     obj.position.x+obj.size.x/2+(128-obj.animationController-32),  obj.position.y+obj.size.y/2+(128-obj.animationController-32));
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
             }
             if (obj.animationController > 112) {
@@ -1073,7 +1089,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-48),  obj.position.y+obj.size.y/2-(128-obj.animationController-48),
                     obj.position.x+obj.size.x/2+(128-obj.animationController-48),  obj.position.y+obj.size.y/2+(128-obj.animationController-48));
-                    player.animationController++;
+                    Player.animationController++;
                     printf("%d\n", obj.animationController);
             }
 
@@ -1081,7 +1097,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
         } else if (obj.animationController >= 128 && obj.animationController < 512) {
 
-            if(obj.animationController < 150) player.position.x = 576;
+            if(obj.animationController < 150) Player.position.x = 576;
 
             int blink = obj.animationController;
             if ((blink > 192 && blink < 224) ||
@@ -1092,17 +1108,16 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
                 DrawPlayer(hdc, obj);
             }
-            player.animationController++;
+            Player.animationController++;
 
         } else if (obj.animationController >= 512){
-            player.animationController = 0;
+            Player.animationController = 0;
             printf("%d\n", obj.animationController);
         }
-            DeleteObject(DC_PEN);
 
 
         break;
-    case 2:
+    case simpleInvader:
 
         SelectObject(hdc, GetStockObject(DC_BRUSH));
         SetDCBrushColor(hdc, obj.color);
@@ -1197,7 +1212,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
 
 
         break;
-    case 1:
+    case playerBullet:
         SelectObject(hdc, GetStockObject(DC_BRUSH));
         SetDCBrushColor(hdc, RGB(18, 240, 217));
 
@@ -1212,7 +1227,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
         Polygon(hdc, PlayerBulletShape, 6);
 
         break;
-    case 3:
+    case simpleInvaderBullet:
 
         SelectObject(hdc, GetStockObject(DC_BRUSH));
         SetDCBrushColor(hdc, obj.color);
@@ -1221,7 +1236,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
             (int)(obj.position.x + obj.size.x), (int)(obj.position.y + obj.size.y));
 
         break;
-    case 4:
+    case laserShooter:
         SelectObject(hdc, GetStockObject(DC_BRUSH));
         SetDCBrushColor(hdc, RGB(0, 0, 255));
         if (obj.animationController > 0) {
@@ -1309,7 +1324,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
         Rectangle(hdc, obj.position.x+72, obj.position.y+24, obj.position.x+80, obj.position.y+40);
 
         break;
-    case 5:
+    case laserShooterBullet:
         SelectObject(hdc, GetStockObject(DC_BRUSH));
         SetDCBrushColor(hdc, RGB(255, 0, 0));
         Rectangle(hdc, (int)obj.position.x, (int)obj.position.y, (int)(obj.position.x + obj.size.x), (int)(obj.position.y + obj.size.y));
@@ -1326,7 +1341,7 @@ void DrawObject(AnyObject obj, HDC hdc) {
             Rectangle(hdc, (int)(obj.position.x+10), (int)obj.position.y, (int)(obj.position.x + obj.size.x - 10), (int)(obj.position.y + obj.size.y));
         }
         break;
-    case 6:
+    case shieldInvader:
             SelectObject(hdc, GetStockObject(DC_BRUSH));
             SetDCBrushColor(hdc, obj.color);
 
@@ -1475,17 +1490,17 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
 
     if (GameIsOn){
 
-        DrawObject(player, memDC);
+        DrawObject(Player, memDC);
 
         for(int i=0; i < ObjectArrayCounter; i++) DrawObject(ObjectArray[i], memDC);
 
         char ScoreIdString[20];
-        sprintf(ScoreIdString, "SCORE: %d", player.playerScore);
+        sprintf(ScoreIdString, "SCORE: %d", Player.PlayerScore);
         SetTextColor(memDC, RGB(0, 255, 0));
         SetBkMode(memDC, TRANSPARENT);
         SelectObject(memDC, ScoreFont);
         TextOut(memDC, 20, 20, ScoreIdString, strlen(ScoreIdString));
-        for (int i = 1; i < (player.lifesRested + 1); i++) {
+        for (int i = 1; i < (Player.lifesRested + 1); i++) {
             POINT points[10] = { {1231-i*32, 30}, {1235-i*32, 26}, {1239-i*32, 26}, {1243-i*32, 30}, {1247-i*32, 26}, {1251-i*32, 26}, {1255-i*32, 30}, {1255-i*32, 34}, {1243-i*32, 44}, {1231-i*32, 34} };
             SelectObject(memDC, GetStockObject(DC_BRUSH));
             SetDCBrushColor(memDC, RGB (255, 0, 0));
@@ -1501,7 +1516,7 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         HBITMAP YouWinBM = (HBITMAP)LoadImage(NULL, TEXT("you_win.bmp"), IMAGE_BITMAP, 400, 144,  LR_LOADFROMFILE);
         SelectObject(YouWinDC, YouWinBM);
         char YouWinString[30];
-        sprintf(YouWinString, "YOUR SCORE: %d", player.playerScore);
+        sprintf(YouWinString, "YOUR SCORE: %d", Player.PlayerScore);
         SetTextColor(dc, RGB(0, 255, 0));
         SetBkMode(dc, TRANSPARENT);
         SelectObject(dc, GeneralFont);
@@ -1516,7 +1531,7 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         HBITMAP YouLoseBM = (HBITMAP)LoadImage(NULL, TEXT("you_lose.bmp"), IMAGE_BITMAP, 400, 144,  LR_LOADFROMFILE);
         SelectObject(YouLoseDC, YouLoseBM);
         char YouLoseString[30];
-        sprintf(YouLoseString, "YOUR SCORE: %d", player.playerScore);
+        sprintf(YouLoseString, "YOUR SCORE: %d", Player.PlayerScore);
         SetTextColor(dc, RGB(0, 255, 0));
         SetBkMode(dc, TRANSPARENT);
         SelectObject(dc, GeneralFont);
@@ -1780,8 +1795,8 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
     switch(message){
     case WM_TIMER:
         if(wParam == 1) {
-            if (GameIsOn && levelInitMoveStatus && player.animationController <= 0){
-                        AddBullet(player.position.x+player.size.x/2-8, player.position.y-16, 1);
+            if (GameIsOn && levelInitMoveStatus && Player.animationController <= 0){
+                        AddBullet(Player.position.x+Player.size.x/2-8, Player.position.y-16, 1);
             }
         }
         if (wParam == 2) {
@@ -1880,8 +1895,8 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
         break;
     case WM_LBUTTONDOWN:
         if(GameIsOn){
-            if (levelInitMoveStatus && !ShootingIndicator && MouseShootingIndicator && player.animationController <= 0){
-                    AddBullet(player.position.x+player.size.x/2-8, player.position.y-16, 1);
+            if (levelInitMoveStatus && !ShootingIndicator && MouseShootingIndicator && Player.animationController <= 0){
+                    AddBullet(Player.position.x+Player.size.x/2-8, Player.position.y-16, 1);
                     MouseShootingIndicator = FALSE;
             }
         }
