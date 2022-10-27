@@ -1,5 +1,6 @@
 #pragma once
 
+
 typedef struct XYPositionOfAnyObject{
     float x;
     float y;

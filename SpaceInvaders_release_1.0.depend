@@ -6,12 +6,12 @@
 	<time.h>
 	<Windows.h>
 
-1666633091 source:c:\source\codeblockssource\spaceinvaders_release_1.0\main.c
+1666695033 source:c:\source\codeblockssource\spaceinvaders_release_1.0\main.c
 	<stdlib.h>
 	<stdio.h>
 	<math.h>
 	<time.h>
-	<Windows.h>
+	"draw.helpers.h"
 
 1666692244 source:c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.c
 
@@ -26,4 +26,17 @@
 1666692099 c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.c
 	<windows.h>
 	"main.c"
+
+1666695033 c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.h
+	"global.indicators.h"
+	"global.variables.h"
+
+1666695033 c:\source\codeblockssource\spaceinvaders_release_1.0\global.indicators.h
+	<windows.h>
+
+1666695033 c:\source\codeblockssource\spaceinvaders_release_1.0\global.variables.h
+	<windows.h>
+	"custom.types.h"
+
+1666693832 c:\source\codeblockssource\spaceinvaders_release_1.0\custom.types.h
 

@@ -1,32 +1,13 @@
-#pragma once
+
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 #include <time.h>
 
-#define MenuButton_NewGame_id 101
-#define MenuButton_Controls_id 102
-#define MenuButton_Fullscreen_id 103
-#define MenuButton_Sound_id 104
-#define MenuButton_Exit_id 105
-
-#define PauseButton_BackToGame_id 201
-#define PauseButton_MainMenu_id 202
-
-#define ControlsButton_MainMenu_id 301
-
-#define YouWinButton_MainMenu_id 401
-#define YouLoseButton_MainMenu_id 402
-
-#define ScoreTextWindow_id 1001
-
-#include <Windows.h>
-
 #include "draw.helpers.h"
 
-
-
+#include "constants.h"
 
 
 
@@ -37,12 +18,6 @@ XYPosition GetObjectPosition(float x, float y){
     point.y = y;
     return point;
 }
-
-
-const int PlayerPositionY = 600;
-
-
-
 
 
 BOOL ObjectCollision(AnyObject bullet, AnyObject character){
@@ -61,13 +36,7 @@ PAnyObject NewArrayObject(){
     return ObjectArray + ObjectArrayCounter - 1;
 }
 
-void WinShow(HDC dc, HBRUSH* brush, HBITMAP* PBM);
-
-void InitLevel_1();
-
-void InitLevel_2();
-
-void InitLevel_3();
+void WinShow(HDC, HBRUSH*, HBITMAP*);
 
 
 void DeleteArrayObject(){
@@ -182,161 +151,6 @@ void ObjectSetDestPoint(AnyObject* obj, float xPos, float yPos, float vecSpeed){
 }
 
 
-void InitLevel_1() {
-    levelInitMoveStatus = FALSE;
-    Player.levelStatus = 1;
-    Player.position.x = 576;
-
-    int x = -192;
-    int y = 64;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x -= 256;
-    }
-
-    x = 1344;
-    y = 192;
-
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x += 256;
-    }
-
-    x = -192;
-    y = 320;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x -= 256;
-    }
-
-    x = 1344;
-    y = 448;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x += 256;
-    }
-
-    lvl_DrawAbility = 1;
-    WinShow(dc, &brush, &BM);
-    Sleep(3000);
-    lvl_DrawAbility = 0;
-}
-
-
-void InitLevel_2() {
-
-    levelInitMoveStatus = FALSE;
-    Player.levelStatus = 2;
-    Player.position.x = 576;
-    int x = -192;
-    int y = 64;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x -= 256;
-    }
-
-    x = 1344;
-    y = 192;
-
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x += 256;
-    }
-
-    x = -192;
-    y = 320;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, laserShooter);
-        x -= 256;
-    }
-
-    x = 1280;
-    y = 448;
-    for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, shieldInvader);
-        x += 128;
-    }
-
-        lvl_DrawAbility = 2;
-        WinShow(dc, &brush, &BM);
-        Sleep(3000);
-        lvl_DrawAbility = 0;
-}
-
-
-void InitLevel_3() {
-
-    levelInitMoveStatus = FALSE;
-    Player.levelStatus = 3;
-    Player.position.x = 576;
-
-    int x = -192;
-    int y = 64;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, laserShooter);
-        x -= 256;
-    }
-
-    x = 1344;
-    y = 148;
-
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x += 256;
-    }
-
-    x = -128;
-    y = 232;
-    for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, shieldInvader);
-        x -= 128;
-    }
-
-    x = 1344;
-    y = 316;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, laserShooter);
-        x += 256;
-    }
-
-    x = -192;
-    y = 400;
-    for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
-        x -= 256;
-    }
-
-    x = 1280;
-    y = 484;
-    for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, shieldInvader);
-        x += 128;
-    }
-
-        lvl_DrawAbility = 3;
-        WinShow(dc, &brush, &BM);
-        Sleep(3000);
-        lvl_DrawAbility = 0;
-}
-
-void InitLevel_4() {
-
-    levelInitMoveStatus = FALSE;
-    Player.levelStatus = 4;
-    Player.position.x = 576;
-
-    InitObject(NewArrayObject(), -544, 100, motherShip);
-
-    lvl_DrawAbility = 4;
-    WinShow(dc, &brush, &BM);
-    Sleep(3000);
-    lvl_DrawAbility = 0;
-}
-
-void WinInit() {
-	InitObject(&Player, ((rct.right-rct.left))/2-64, PlayerPositionY, player);
-	InitLevel_1();
-}
 
 void PlayerControl(){
     static float PlayerSpeed = 12;
@@ -350,53 +164,14 @@ void PlayerControl(){
     }
 }
 
+#include "level.helpers.h"
 
-void LevelControl(){
-
-    switch(Player.levelStatus){
-    case 0:
-        GameIsOn = FALSE;
-        YouLoseIndicator = TRUE;
-        break;
-    case 1:
-        lvl_1_EnemyCount--;
-        if (lvl_1_EnemyCount <= 0){
-            DeleteWholeArray();
-            WinShow(dc, &brush, &BM);
-            InitLevel_2();
-        }
-        break;
-    case 2:
-        lvl_2_EnemyCount--;
-        if (lvl_2_EnemyCount <= 0){
-            DeleteWholeArray();
-            WinShow(dc, &brush, &BM);
-            InitLevel_3();
-        }
-        break;
-    case 3:
-        lvl_3_EnemyCount--;
-        if (lvl_3_EnemyCount <= 0){
-            DeleteWholeArray();
-            WinShow(dc, &brush, &BM);
-            InitLevel_4();
-        }
-        break;
-    case 4:
-            GameIsOn = FALSE;
-            Player.levelStatus = 5;
-            WinShow(dc, &brush, &BM);
-            LevelControl();
-        break;
-    case 5:
-            YouWinIndicator = TRUE;
-        break;
-    default:
-        break;
-    }
+void WinInit() {
+	InitObject(&Player, ((rct.right-rct.left))/2-64, PlayerPositionY, player);
+	InitLevel_1();
 }
 
-typedef struct ThreadParams{
+typedef struct RedrawBackgroundThreadParams{
         HDC memDC;
         HDC hdcSrc;
     } TParams, *PTParams;
@@ -835,184 +610,7 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
     DeleteObject(memBM);
 }
 
-void NewGame(){
-        ObjectArray = NULL;
-        ObjectArrayCounter = 0;
-        lvl_1_EnemyCount = 20;
-        lvl_2_EnemyCount = 25;
-        lvl_3_EnemyCount = 40;
-        WinInit();
-        GameIsOn = TRUE;
-        HUDInitIndicator = TRUE;
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Sound);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Exit);
-        WinShow(dc, &brush, &BM);
-}
-
-void BackToGame(){
-    GameIsOn = TRUE;
-    DestroyWindow(PauseButton_BackToGame);
-    DestroyWindow(PauseButton_MainMenu);
-}
-
-void OnOffFullScreen(){
-    if (!FullScreen){
-        DEVMODE dm;
-        memset(&dm, 0 ,sizeof(DEVMODE));
-        dm.dmSize=sizeof(DEVMODE);
-        dm.dmPelsWidth=1280;
-        dm.dmPelsHeight=720;
-        dm.dmFields=DM_PELSWIDTH|DM_PELSHEIGHT;
-        ChangeDisplaySettings(&dm, CDS_FULLSCREEN);
-
-        SetWindowLongPtr(hwnd, GWL_STYLE, WS_POPUP | WS_VISIBLE);
-        SetWindowPos(hwnd, HWND_TOP, 0, 0, 1280, 720, SWP_SHOWWINDOW);
-        FullScreen = TRUE;
-        strcpy(FullScreenButtonName, "Disable fullscreen");
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Sound);
-        DestroyWindow(MenuButton_Exit);
-        MainMenuIndicator = TRUE;
-    } else {
-        ChangeDisplaySettings(0, 0);
-        SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
-        SetWindowPos(hwnd, HWND_TOP, 360, 180, 1280, 720, SWP_SHOWWINDOW);
-        FullScreen = FALSE;
-        strcpy(FullScreenButtonName, "Enable fullscreen");
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Sound);
-        DestroyWindow(MenuButton_Exit);
-        MainMenuIndicator = TRUE;
-    }
-}
-
-void OnOffSound() {
-    if (SoundIndicator){
-        strcpy(SoundButtonName, "Enable sound");
-        PlaySound(NULL, NULL, 0);
-        SoundIndicator = FALSE;
-        MainMenuIndicator = TRUE;
-    } else {
-        strcpy(SoundButtonName, "Disable sound");
-        PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-        SoundIndicator = TRUE;
-        MainMenuIndicator = TRUE;
-    }
-}
-
-void PauseMenu(){
-
-            if (GameIsOn){
-                GameIsOn = FALSE;
-                WinShow(dc, &brush, &BM);
-                SelectObject(dc, GetStockObject(DC_BRUSH));
-                SetDCBrushColor(dc, RGB(255, 255, 255));
-
-                Rectangle(dc, (rct.right-rct.left)/2-60, (rct.bottom-rct.top)/2-50,
-                 (rct.right-rct.left)/2-20, (rct.bottom-rct.top)/2+50);
-                Rectangle(dc, (rct.right-rct.left)/2+20, (rct.bottom-rct.top)/2-50,
-                 (rct.right-rct.left)/2+60, (rct.bottom-rct.top)/2+50);
-
-                PauseButton_BackToGame = CreateWindow("button", "Back To Game", WS_VISIBLE | WS_CHILD,
-                                                           (rct.right-rct.left)/2-60, (rct.bottom-rct.top)/2-100, 120, 40,
-                                                           hwnd, (HMENU)PauseButton_BackToGame_id, NULL,  NULL);
-
-                PauseButton_MainMenu = CreateWindow("button", "Main Menu", WS_VISIBLE | WS_CHILD,
-                                                           (rct.right-rct.left)/2-60, (rct.bottom-rct.top)/2+60, 120, 40,
-                                                           hwnd, (HMENU)PauseButton_MainMenu_id, NULL,  NULL);
-            }
-}
-
-
-
-void MainMenu(RECT* rct) {
-    if (MainMenuIndicator){
-        WinShow(dc, &brush, &BM);
-
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Sound);
-        DestroyWindow(MenuButton_Exit);
-
-        MenuButton_NewGame = CreateWindow("button", "New Game", WS_VISIBLE | WS_CHILD,
-                                               (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-100, 200, 40,
-                                               hwnd, (HMENU)MenuButton_NewGame_id, NULL,  NULL);
-
-        MenuButton_Controls = CreateWindow("button", "Controls", WS_VISIBLE | WS_CHILD,
-                                                  (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-50, 200, 40,
-                                                  hwnd, (HMENU)MenuButton_Controls_id, NULL,  NULL);
-
-        MenuButton_Fullscreen = CreateWindow("button", FullScreenButtonName, WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2, 200, 40,
-                                            hwnd, (HMENU)MenuButton_Fullscreen_id, NULL,  NULL);
-
-        MenuButton_Sound = CreateWindow("button", SoundButtonName, WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+50, 200, 40,
-                                            hwnd, (HMENU)MenuButton_Sound_id, NULL,  NULL);
-
-        MenuButton_Exit = CreateWindow("button", "Exit", WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+100, 200, 40,
-                                            hwnd, (HMENU)MenuButton_Exit_id, NULL,  NULL);
-        MainMenuIndicator = FALSE;
-    }
-}
-
-void Controls(RECT* rct){
-        if (ControlsIndicator) {
-
-
-        WinShow(dc, &brush, &BM);
-
-        ControlsButton_MainMenu = CreateWindow("button", "Main menu", WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+200, 200, 40,
-                                            hwnd, (HMENU)ControlsButton_MainMenu_id, NULL,  NULL);
-        ControlsIndicator = FALSE;
-
-        }
-}
-
-void Opening(){
-    if (OpeningIndicator){
-        WinShow(dc, &brush, &BM);
-        Sleep(1);
-        OpeningLoading += 4;
-        if (OpeningLoading >= 845) {
-                OpeningIndicator = FALSE;
-                MainMenuIndicator = TRUE;
-                Sleep(500);
-        }
-    }
-}
-
-void YouWin(RECT* rct){
-    if(YouWinIndicator){
-            WinShow(dc, &brush, &BM);
-            YouWinButton_MainMenu = CreateWindow("button", "Main menu", WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+200, 200, 40,
-                                            hwnd, (HMENU)YouWinButton_MainMenu_id, NULL,  NULL);
-    YouWinIndicator = FALSE;
-    }
-
-}
-
-void YouLose(RECT* rct){
-    if(YouLoseIndicator){
-            WinShow(dc, &brush, &BM);
-            YouLoseButton_MainMenu = CreateWindow("button", "Main menu", WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+200, 200, 40,
-                                            hwnd, (HMENU)YouLoseButton_MainMenu_id, NULL,  NULL);
-    YouLoseIndicator = FALSE;
-    }
-
-}
+#include "pages.helpers.h"
 
 LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam);
 

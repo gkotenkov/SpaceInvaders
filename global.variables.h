@@ -1,6 +1,8 @@
 #pragma once
+
 #include <windows.h>
 #include "custom.types.h"
+
 
 char FullScreenButtonName[20] = "Enable fullscreen";
 char SoundButtonName[20] = "Disable sound";

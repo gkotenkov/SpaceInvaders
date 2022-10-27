@@ -17,8 +17,12 @@ Features:
 	}
 Refactoring:
 	{
-	1. Refactor objects type in enum way
-	}
+	1. Replace draw functions into draw.helpers.h 
+	2. Replace typedefs into global.types.h
+	3. Replace indicators into global.indicators.h
+	4. Replace global variables into global.variables.h
+	5. Added a new typedef enum for objects' types. Refactor types of objects in enum way. 
+}
 Balance:
 	{
 	1.

@@ -1,5 +1,7 @@
 #pragma once
+
 #include <windows.h>
+
 
 BOOL FullScreen = FALSE;
 BOOL MainMenuIndicator = FALSE;

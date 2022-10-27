@@ -1,9 +1,10 @@
 #pragma once
 
-#include <windows.h>
-#include "constant.types.h"
 #include "global.indicators.h"
 #include  "global.variables.h"
+
+
+void LevelControl();
 
 void DrawPlayerSpaceship (HDC hdc, AnyObject obj) {
     SelectObject(hdc, GetStockObject(DC_BRUSH));
@@ -644,3 +645,6 @@ void DrawShieldInvader (HDC hdc, AnyObject obj) {
             }
             Rectangle(hdc, obj.position.x+48, obj.position.y+24, obj.position.x+80, obj.position.y+40);
 }
+
+
+
