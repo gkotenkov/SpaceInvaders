@@ -82,16 +82,14 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
             Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController,  obj.position.y+obj.size.y/2-obj.animationController,
                     obj.position.x+obj.size.x/2+obj.animationController,  obj.position.y+obj.size.y/2+obj.animationController);
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
+                    Player.animationController+=2;
             if (obj.animationController > 16){
 
                 SetDCBrushColor(hdc, RGB(255, 255, 0));
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+16,  obj.position.y+obj.size.y/2-obj.animationController+16,
                     obj.position.x+obj.size.x/2+obj.animationController-16,  obj.position.y+obj.size.y/2+obj.animationController-16);
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
+                    Player.animationController+=2;
 
             }
             if (obj.animationController > 32) {
@@ -100,8 +98,7 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+32,  obj.position.y+obj.size.y/2-obj.animationController+32,
                     obj.position.x+obj.size.x/2+obj.animationController-32,  obj.position.y+obj.size.y/2+obj.animationController-32);
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
+                    Player.animationController+=2;
             }
             if (obj.animationController > 48) {
 
@@ -109,8 +106,7 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-obj.animationController+48,  obj.position.y+obj.size.y/2-obj.animationController+48,
                     obj.position.x+obj.size.x/2+obj.animationController-48,  obj.position.y+obj.size.y/2+obj.animationController-48);
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
+                    Player.animationController+=2;
             }
 
         } else if (obj.animationController >= 64 && obj.animationController < 128) {
@@ -120,7 +116,7 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
             SetDCBrushColor(hdc, RGB(255, 255, 255));
             Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController),  obj.position.y+obj.size.y/2-(128-obj.animationController),
                     obj.position.x+obj.size.x/2+(128-obj.animationController),  obj.position.y+obj.size.y/2+(128-obj.animationController));
-            Player.animationController++;
+            Player.animationController+=2;
 
             if (obj.animationController > 80){
 
@@ -128,9 +124,7 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-16),  obj.position.y+obj.size.y/2-(128-obj.animationController-16),
                     obj.position.x+obj.size.x/2+(128-obj.animationController-16),  obj.position.y+obj.size.y/2+(128-obj.animationController-16));
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
-
+                    Player.animationController+=2;
             }
             if (obj.animationController > 96) {
 
@@ -138,8 +132,7 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-32),  obj.position.y+obj.size.y/2-(128-obj.animationController-32),
                     obj.position.x+obj.size.x/2+(128-obj.animationController-32),  obj.position.y+obj.size.y/2+(128-obj.animationController-32));
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
+                    Player.animationController+=2;
             }
             if (obj.animationController > 112) {
 
@@ -147,11 +140,8 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
                 Ellipse(hdc, obj.position.x+obj.size.x/2-(128-obj.animationController-48),  obj.position.y+obj.size.y/2-(128-obj.animationController-48),
                     obj.position.x+obj.size.x/2+(128-obj.animationController-48),  obj.position.y+obj.size.y/2+(128-obj.animationController-48));
-                    Player.animationController++;
-                    printf("%d\n", obj.animationController);
+                    Player.animationController+=2;
             }
-
-            printf("%d\n", obj.animationController);
 
         } else if (obj.animationController >= 128 && obj.animationController < 512) {
 
@@ -166,11 +156,10 @@ void DrawPlayer (HDC hdc, AnyObject obj) {
 
                 DrawPlayerSpaceship(hdc, obj);
             }
-            Player.animationController++;
+            Player.animationController+=4;
 
         } else if (obj.animationController >= 512){
             Player.animationController = 0;
-            printf("%d\n", obj.animationController);
         }
 
 
@@ -319,9 +308,15 @@ void DrawMotherShip (HDC hdc, AnyObject obj) {
             SelectObject(hdc, GetStockObject(DC_BRUSH));
             if (obj.lifesRested > 0) {
                 SetDCBrushColor(hdc, RGB(0, 255, 0));
-                Rectangle(hdc, 395, 0, 885, 30);
+                POINT points[4] = {
+                    {365, 0},
+                    {915, 0},
+                    {885, 30},
+                    {395, 30}
+                };
+                Polygon(hdc, points, 4);
                 SetDCBrushColor(hdc, RGB(255, 0, 0));
-                Rectangle(hdc, 400, 5, 400+8*obj.lifesRested, 25);
+                Rectangle(hdc, 400, 5, 400+8/Difficulty*obj.lifesRested, 25);
             }
 
             if (obj.lifesRested > 24){
@@ -346,7 +341,7 @@ void DrawMotherShip (HDC hdc, AnyObject obj) {
             Rectangle(hdc, obj.position.x+384, obj.position.y+128, obj.position.x+400, obj.position.y+160);
             } else {
                 if (BossDeathBOOM <=640){
-                BossDeathBOOM++;
+                BossDeathBOOM+=4;
                 SelectObject(hdc, GetStockObject(DC_BRUSH));
                 SetDCBrushColor(hdc, RGB(255, 0, 0));
                 Ellipse(hdc, obj.position.x+208-BossDeathBOOM, obj.position.y+128-BossDeathBOOM, obj.position.x+obj.size.x-208+BossDeathBOOM, obj.position.y+obj.size.y-128+BossDeathBOOM);
@@ -459,9 +454,27 @@ void DrawSimpleInvader (HDC hdc, AnyObject obj) {
 
             Polygon(hdc, EnemyShape, 36);
         }
-        SetDCBrushColor(hdc, RGB(0, 0, 0));
+        switch (Player.levelStatus){
+        case 1:
+            brush = CreatePatternBrush(Lvl_1_BM);
+            break;
+        case 2:
+            brush = CreatePatternBrush(Lvl_2_BM);
+            break;
+        case 3:
+            brush = CreatePatternBrush(Lvl_3_BM);
+            break;
+        case 4:
+            brush = CreatePatternBrush(BossBM);
+            break;
+        default:
+            brush = CreatePatternBrush(BM);
+            break;
+        }
+        SelectObject(hdc, brush);
         Rectangle(hdc, obj.position.x+48, obj.position.y+24, obj.position.x+56, obj.position.y+40);
         Rectangle(hdc, obj.position.x+72, obj.position.y+24, obj.position.x+80, obj.position.y+40);
+        DeleteObject(brush);
 }
 
 void DrawPlayerBullet (HDC hdc, AnyObject obj) {
@@ -569,10 +582,27 @@ void DrawLaserShooter (HDC hdc, AnyObject obj) {
             Polygon(hdc, LaserShooterShape, 37);
         }
 
+        switch (Player.levelStatus){
+        case 1:
+            brush = CreatePatternBrush(Lvl_1_BM);
+            break;
+        case 2:
+            brush = CreatePatternBrush(Lvl_2_BM);
+            break;
+        case 3:
+            brush = CreatePatternBrush(Lvl_3_BM);
+            break;
+        case 4:
+            brush = CreatePatternBrush(BossBM);
+            break;
+        default:
+            brush = CreatePatternBrush(BM);
+            break;
+        }
         SelectObject(hdc, brush);
-        SetDCBrushColor(hdc, RGB(0, 0, 0));
         Rectangle(hdc, obj.position.x+48, obj.position.y+24, obj.position.x+56, obj.position.y+40);
         Rectangle(hdc, obj.position.x+72, obj.position.y+24, obj.position.x+80, obj.position.y+40);
+        DeleteObject(brush);
 }
 
 void DrawLaserShooterBullet (HDC hdc, AnyObject obj) {
@@ -646,5 +676,43 @@ void DrawShieldInvader (HDC hdc, AnyObject obj) {
             Rectangle(hdc, obj.position.x+48, obj.position.y+24, obj.position.x+80, obj.position.y+40);
 }
 
+void DrawLifeHeart (HDC hdc, AnyObject obj) {
+    POINT points[10] = {
+        {obj.position.x+4, obj.position.y},
+        {obj.position.x+8, obj.position.y},
+        {obj.position.x+12, obj.position.y+4},
+        {obj.position.x+16, obj.position.y},
+        {obj.position.x+20, obj.position.y},
+        {obj.position.x+24, obj.position.y+4},
+        {obj.position.x+24, obj.position.y+8},
+        {obj.position.x+12, obj.position.y+20},
+        {obj.position.x, obj.position.y+8},
+        {obj.position.x, obj.position.y+4}
+    };
+    SelectObject(hdc, GetStockObject(DC_BRUSH));
+    SetDCBrushColor(hdc, RGB (255, 0, 0));
+    Polygon(hdc, points, 10);
+}
 
+void DrawHUD (HDC hdc){
+    SelectObject(hdc, GetStockObject(DC_BRUSH));
+    SetDCBrushColor(hdc, RGB(0, 255, 0));
+    POINT points[4] = {
+        {0, 0},
+        {200, 0},
+        {170, 30},
+        {0, 30},
+    };
+
+    Polygon(hdc, points, 4);
+
+    POINT points2[4] = {
+        {1280, 0},
+        {1080, 0},
+        {1110, 30},
+        {1280, 30},
+    };
+
+    Polygon(hdc, points2, 4);
+}
 

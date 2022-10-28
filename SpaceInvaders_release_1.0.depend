@@ -6,12 +6,18 @@
 	<time.h>
 	<Windows.h>
 
-1666695033 source:c:\source\codeblockssource\spaceinvaders_release_1.0\main.c
+1666895877 source:c:\source\codeblockssource\spaceinvaders_release_1.0\main.c
 	<stdlib.h>
 	<stdio.h>
 	<math.h>
 	<time.h>
 	"draw.helpers.h"
+	"constants.h"
+	"array.helpers.h"
+	"object.helpers.h"
+	"win.helpers.h"
+	"level.helpers.h"
+	"pages.helpers.h"
 
 1666692244 source:c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.c
 
@@ -27,16 +33,29 @@
 	<windows.h>
 	"main.c"
 
-1666695033 c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.h
+1666961395 c:\source\codeblockssource\spaceinvaders_release_1.0\draw.helpers.h
 	"global.indicators.h"
 	"global.variables.h"
 
-1666695033 c:\source\codeblockssource\spaceinvaders_release_1.0\global.indicators.h
+1666890514 c:\source\codeblockssource\spaceinvaders_release_1.0\global.indicators.h
 	<windows.h>
 
-1666695033 c:\source\codeblockssource\spaceinvaders_release_1.0\global.variables.h
+1666962213 c:\source\codeblockssource\spaceinvaders_release_1.0\global.variables.h
 	<windows.h>
 	"custom.types.h"
 
-1666693832 c:\source\codeblockssource\spaceinvaders_release_1.0\custom.types.h
+1666962213 c:\source\codeblockssource\spaceinvaders_release_1.0\custom.types.h
+
+1666895865 c:\source\codeblockssource\spaceinvaders_release_1.0\constants.h
+
+1666962647 c:\source\codeblockssource\spaceinvaders_release_1.0\array.helpers.h
+
+1666966394 c:\source\codeblockssource\spaceinvaders_release_1.0\object.helpers.h
+
+1666896022 c:\source\codeblockssource\spaceinvaders_release_1.0\win.helpers.h
+
+1666890514 c:\source\codeblockssource\spaceinvaders_release_1.0\level.helpers.h
+
+1666895865 c:\source\codeblockssource\spaceinvaders_release_1.0\pages.helpers.h
+	"constants.h"
 

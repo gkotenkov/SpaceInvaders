@@ -15,3 +15,5 @@ BOOL YouWinIndicator = FALSE;
 BOOL YouLoseIndicator = FALSE;
 BOOL ShootingIndicator = FALSE;
 BOOL MouseShootingIndicator = FALSE;
+BOOL EndlessModeIndicator = FALSE;
+

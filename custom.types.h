@@ -6,8 +6,6 @@ typedef struct XYPositionOfAnyObject{
     float y;
 } XYPosition;
 
-
-
 typedef struct AnyObjectProperties {
     XYPosition position;
     XYPosition size;
@@ -26,8 +24,8 @@ typedef struct AnyObjectProperties {
     int animationController;
     BOOL objectDeliting;
     int initSide;
+    int id;
 } AnyObject, *PAnyObject;
-
 
 typedef struct PlayerSize {
     float width;
@@ -57,5 +55,18 @@ typedef enum ObjectTypes {
     laserShooter = 4,
     laserShooterBullet = 5,
     shieldInvader = 6,
-    motherShip = 7
+    motherShip = 7,
+    lifeHeart = 8
 } ObjType;
+
+typedef struct EndlessModeType{
+    float x;
+    float y;
+    int id;
+} EMType, *PEMType;
+
+
+
+
+
+

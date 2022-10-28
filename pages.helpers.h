@@ -13,9 +13,8 @@ void NewGame(){
         GameIsOn = TRUE;
         HUDInitIndicator = TRUE;
         DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Sound);
-        DestroyWindow(MenuButton_Fullscreen);
+        DestroyWindow(MenuButton_EndlessMode);
+        DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
         WinShow(dc, &brush, &BM);
 }
@@ -41,9 +40,8 @@ void OnOffFullScreen(){
         FullScreen = TRUE;
         strcpy(FullScreenButtonName, "Disable fullscreen");
         DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Sound);
+        DestroyWindow(MenuButton_EndlessMode);
+        DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
         MainMenuIndicator = TRUE;
     } else {
@@ -53,9 +51,8 @@ void OnOffFullScreen(){
         FullScreen = FALSE;
         strcpy(FullScreenButtonName, "Enable fullscreen");
         DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Sound);
+        DestroyWindow(MenuButton_EndlessMode);
+        DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
         MainMenuIndicator = TRUE;
     }
@@ -98,36 +95,29 @@ void PauseMenu(){
             }
 }
 
-
-
 void MainMenu(RECT* rct) {
     if (MainMenuIndicator){
         WinShow(dc, &brush, &BM);
 
         DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_Controls);
-        DestroyWindow(MenuButton_Fullscreen);
-        DestroyWindow(MenuButton_Sound);
+        DestroyWindow(MenuButton_EndlessMode);
+        DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
 
         MenuButton_NewGame = CreateWindow("button", "New Game", WS_VISIBLE | WS_CHILD,
                                                (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-100, 200, 40,
                                                hwnd, (HMENU)MenuButton_NewGame_id, NULL,  NULL);
 
-        MenuButton_Controls = CreateWindow("button", "Controls", WS_VISIBLE | WS_CHILD,
+        MenuButton_EndlessMode = CreateWindow("button", "Endless mode", WS_VISIBLE | WS_CHILD,
                                                   (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-50, 200, 40,
-                                                  hwnd, (HMENU)MenuButton_Controls_id, NULL,  NULL);
+                                                  hwnd, (HMENU)MenuButton_EndlessMode_id, NULL,  NULL);
 
-        MenuButton_Fullscreen = CreateWindow("button", FullScreenButtonName, WS_VISIBLE | WS_CHILD,
+        MenuButton_SettingsHelp = CreateWindow("button", "Settings & Help", WS_VISIBLE | WS_CHILD,
                                             (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2, 200, 40,
-                                            hwnd, (HMENU)MenuButton_Fullscreen_id, NULL,  NULL);
-
-        MenuButton_Sound = CreateWindow("button", SoundButtonName, WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+50, 200, 40,
-                                            hwnd, (HMENU)MenuButton_Sound_id, NULL,  NULL);
+                                            hwnd, (HMENU)MenuButton_SettingsHelp_id, NULL,  NULL);
 
         MenuButton_Exit = CreateWindow("button", "Exit", WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+100, 200, 40,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+50, 200, 40,
                                             hwnd, (HMENU)MenuButton_Exit_id, NULL,  NULL);
         MainMenuIndicator = FALSE;
     }
@@ -139,9 +129,9 @@ void Controls(RECT* rct){
 
         WinShow(dc, &brush, &BM);
 
-        ControlsButton_MainMenu = CreateWindow("button", "Main menu", WS_VISIBLE | WS_CHILD,
+        ControlsButton_Back = CreateWindow("button", "Back", WS_VISIBLE | WS_CHILD,
                                             (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+200, 200, 40,
-                                            hwnd, (HMENU)ControlsButton_MainMenu_id, NULL,  NULL);
+                                            hwnd, (HMENU)ControlsButton_Back_id, NULL,  NULL);
         ControlsIndicator = FALSE;
 
         }
@@ -181,4 +171,31 @@ void YouLose(RECT* rct){
     }
 
 }
+
+void EndlessMode (){
+    ObjectArray = NULL;
+    ObjectArrayCounter = 0;
+    GameIsOn = TRUE;
+    HUDInitIndicator = TRUE;
+    EndlessModeIndicator = TRUE;
+    WinInit();
+    DestroyWindow(MenuButton_NewGame);
+    DestroyWindow(MenuButton_EndlessMode);
+    DestroyWindow(MenuButton_SettingsHelp);
+    DestroyWindow(MenuButton_Exit);
+    WinShow(dc, &brush, &BM);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -7,7 +7,7 @@ void InitLevel_1() {
     int x = -192;
     int y = 64;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x -= 256;
     }
 
@@ -15,21 +15,21 @@ void InitLevel_1() {
     y = 192;
 
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x += 256;
     }
 
     x = -192;
     y = 320;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x -= 256;
     }
 
     x = 1344;
     y = 448;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x += 256;
     }
 
@@ -48,7 +48,7 @@ void InitLevel_2() {
     int x = -192;
     int y = 64;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x -= 256;
     }
 
@@ -56,21 +56,21 @@ void InitLevel_2() {
     y = 192;
 
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x += 256;
     }
 
     x = -192;
     y = 320;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, laserShooter);
+        InitObject(NewArrayObject(), x, y, laserShooter, ++GlobalID);
         x -= 256;
     }
 
     x = 1280;
     y = 448;
     for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, shieldInvader);
+        InitObject(NewArrayObject(), x, y, shieldInvader, ++GlobalID);
         x += 128;
     }
 
@@ -90,7 +90,7 @@ void InitLevel_3() {
     int x = -192;
     int y = 64;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, laserShooter);
+        InitObject(NewArrayObject(), x, y, laserShooter, ++GlobalID);
         x -= 256;
     }
 
@@ -98,35 +98,35 @@ void InitLevel_3() {
     y = 148;
 
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x += 256;
     }
 
     x = -128;
     y = 232;
     for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, shieldInvader);
+        InitObject(NewArrayObject(), x, y, shieldInvader, ++GlobalID);
         x -= 128;
     }
 
     x = 1344;
     y = 316;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, laserShooter);
+        InitObject(NewArrayObject(), x, y, laserShooter, ++GlobalID);
         x += 256;
     }
 
     x = -192;
     y = 400;
     for (int i = 0; i < 5; i++){
-        InitObject(NewArrayObject(), x, y, simpleInvader);
+        InitObject(NewArrayObject(), x, y, simpleInvader, ++GlobalID);
         x -= 256;
     }
 
     x = 1280;
     y = 484;
     for (int i = 0; i < 10; i++){
-        InitObject(NewArrayObject(), x, y, shieldInvader);
+        InitObject(NewArrayObject(), x, y, shieldInvader, ++GlobalID);
         x += 128;
     }
 
@@ -138,11 +138,12 @@ void InitLevel_3() {
 
 void InitLevel_4() {
 
+    PlaySound(TEXT("boss_music.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
     levelInitMoveStatus = FALSE;
     Player.levelStatus = 4;
     Player.position.x = 576;
 
-    InitObject(NewArrayObject(), -544, 100, motherShip);
+    InitObject(NewArrayObject(), -544, 100, motherShip, ++GlobalID);
 
     lvl_DrawAbility = 4;
     WinShow(dc, &brush, &BM);
@@ -196,5 +197,4 @@ void LevelControl(){
         break;
     }
 }
-
 
