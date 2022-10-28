@@ -6,6 +6,7 @@
 
 char FullScreenButtonName[20] = "Enable fullscreen";
 char SoundButtonName[20] = "Disable sound";
+char DifficultyButtonName[30] = "Make enemies stronger";
 
 
 COLORREF PlayerColor = RGB(0, 255, 0);
@@ -49,10 +50,22 @@ HWND MenuButton_EndlessMode;
 HWND MenuButton_SettingsHelp;
 HWND MenuButton_Exit;
 
+HWND SettingsHelpButton_Controls;
+HWND SettingsHelpButton_Almanac;
+HWND SettingsHelpButton_Help;
+HWND SettingsHelpButton_Fullscreen;
+HWND SettingsHelpButton_Sound;
+HWND SettingsHelpButton_Difficulty;
+HWND SettingsHelpButton_Back;
+
 HWND PauseButton_BackToGame;
 HWND PauseButton_MainMenu;
 
 HWND ControlsButton_Back;
+
+HWND HelpButton_Back;
+
+HWND AlmanacButton_Back;
 
 HWND YouWinButton_MainMenu;
 
@@ -67,12 +80,15 @@ HBITMAP BossBM;
 HBITMAP Lvl_1_BM;
 HBITMAP Lvl_2_BM;
 HBITMAP Lvl_3_BM;
+HBITMAP EndlessModeBM;
 
 HBRUSH brush;
 
 HFONT ScoreFont = NULL;
 HFONT GeneralFont = NULL;
 HFONT OpeningFont = NULL;
+HFONT HelpFont = NULL;
+HFONT AlmanacFont = NULL;
 
 
 

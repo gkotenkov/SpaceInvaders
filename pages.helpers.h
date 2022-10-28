@@ -4,8 +4,9 @@
 
 
 void NewGame(){
-        ObjectArray = NULL;
-        ObjectArrayCounter = 0;
+        MouseShootingIndicator = FALSE;
+        EndlessModeIndicator = FALSE;
+        DeleteWholeArray();
         lvl_1_EnemyCount = 20;
         lvl_2_EnemyCount = 25;
         lvl_3_EnemyCount = 40;
@@ -26,6 +27,12 @@ void BackToGame(){
 }
 
 void OnOffFullScreen(){
+    DestroyWindow(SettingsHelpButton_Controls);
+    DestroyWindow(SettingsHelpButton_Help);
+    DestroyWindow(SettingsHelpButton_Fullscreen);
+    DestroyWindow(SettingsHelpButton_Sound);
+    DestroyWindow(SettingsHelpButton_Difficulty);
+    DestroyWindow(SettingsHelpButton_Back);
     if (!FullScreen){
         DEVMODE dm;
         memset(&dm, 0 ,sizeof(DEVMODE));
@@ -43,7 +50,7 @@ void OnOffFullScreen(){
         DestroyWindow(MenuButton_EndlessMode);
         DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
-        MainMenuIndicator = TRUE;
+        SettingsHelpIndicator = TRUE;
     } else {
         ChangeDisplaySettings(0, 0);
         SetWindowLongPtr(hwnd, GWL_STYLE, WS_OVERLAPPEDWINDOW | WS_VISIBLE);
@@ -54,21 +61,28 @@ void OnOffFullScreen(){
         DestroyWindow(MenuButton_EndlessMode);
         DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
-        MainMenuIndicator = TRUE;
+        SettingsHelpIndicator = TRUE;
     }
 }
 
 void OnOffSound() {
+    DestroyWindow(SettingsHelpButton_Controls);
+    DestroyWindow(SettingsHelpButton_Help);
+    DestroyWindow(SettingsHelpButton_Fullscreen);
+    DestroyWindow(SettingsHelpButton_Sound);
+    DestroyWindow(SettingsHelpButton_Difficulty);
+    DestroyWindow(SettingsHelpButton_Back);
+
     if (SoundIndicator){
         strcpy(SoundButtonName, "Enable sound");
         PlaySound(NULL, NULL, 0);
         SoundIndicator = FALSE;
-        MainMenuIndicator = TRUE;
+        SettingsHelpIndicator = TRUE;
     } else {
         strcpy(SoundButtonName, "Disable sound");
         PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
         SoundIndicator = TRUE;
-        MainMenuIndicator = TRUE;
+        SettingsHelpIndicator = TRUE;
     }
 }
 
@@ -104,7 +118,7 @@ void MainMenu(RECT* rct) {
         DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
 
-        MenuButton_NewGame = CreateWindow("button", "New Game", WS_VISIBLE | WS_CHILD,
+        MenuButton_NewGame = CreateWindow("button", "Campaign", WS_VISIBLE | WS_CHILD,
                                                (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-100, 200, 40,
                                                hwnd, (HMENU)MenuButton_NewGame_id, NULL,  NULL);
 
@@ -112,7 +126,7 @@ void MainMenu(RECT* rct) {
                                                   (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-50, 200, 40,
                                                   hwnd, (HMENU)MenuButton_EndlessMode_id, NULL,  NULL);
 
-        MenuButton_SettingsHelp = CreateWindow("button", "Settings & Help", WS_VISIBLE | WS_CHILD,
+        MenuButton_SettingsHelp = CreateWindow("button", "Settings | Help", WS_VISIBLE | WS_CHILD,
                                             (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2, 200, 40,
                                             hwnd, (HMENU)MenuButton_SettingsHelp_id, NULL,  NULL);
 
@@ -124,13 +138,13 @@ void MainMenu(RECT* rct) {
 }
 
 void Controls(RECT* rct){
-        if (ControlsIndicator) {
 
+        if (ControlsIndicator) {
 
         WinShow(dc, &brush, &BM);
 
         ControlsButton_Back = CreateWindow("button", "Back", WS_VISIBLE | WS_CHILD,
-                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+200, 200, 40,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+250, 200, 40,
                                             hwnd, (HMENU)ControlsButton_Back_id, NULL,  NULL);
         ControlsIndicator = FALSE;
 
@@ -173,6 +187,7 @@ void YouLose(RECT* rct){
 }
 
 void EndlessMode (){
+    PlaySound(TEXT("endless_mode_sound.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
     ObjectArray = NULL;
     ObjectArrayCounter = 0;
     GameIsOn = TRUE;
@@ -186,11 +201,95 @@ void EndlessMode (){
     WinShow(dc, &brush, &BM);
 }
 
+void SettingsHelp(RECT* rct) {
+    if (SettingsHelpIndicator){
+        WinShow(dc, &brush, &BM);
 
+        DestroyWindow(MenuButton_NewGame);
+        DestroyWindow(MenuButton_EndlessMode);
+        DestroyWindow(MenuButton_SettingsHelp);
+        DestroyWindow(MenuButton_Exit);
 
+        SettingsHelpButton_Controls = CreateWindow("button", "Controls", WS_VISIBLE | WS_CHILD,
+                                               (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-150, 200, 40,
+                                               hwnd, (HMENU)SettingsHelpButton_Controls_id, NULL,  NULL);
 
+        SettingsHelpButton_Help = CreateWindow("button", "Help", WS_VISIBLE | WS_CHILD,
+                                                  (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-100, 200, 40,
+                                                  hwnd, (HMENU)SettingsHelpButton_Help_id, NULL,  NULL);
 
+        SettingsHelpButton_Almanac = CreateWindow("button", "Almanac", WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-50, 200, 40,
+                                            hwnd, (HMENU)SettingsHelpButton_Almanac_id, NULL,  NULL);
 
+        SettingsHelpButton_Fullscreen = CreateWindow("button", FullScreenButtonName, WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2, 200, 40,
+                                            hwnd, (HMENU)SettingsHelpButton_Fullscreen_id, NULL,  NULL);
+
+        SettingsHelpButton_Sound = CreateWindow("button", SoundButtonName, WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+50, 200, 40,
+                                            hwnd, (HMENU)SettingsHelpButton_Sound_id, NULL,  NULL);
+
+        SettingsHelpButton_Difficulty = CreateWindow("button", DifficultyButtonName, WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+100, 200, 40,
+                                            hwnd, (HMENU)SettingsHelpButton_Difficulty_id, NULL,  NULL);
+
+        SettingsHelpButton_Back = CreateWindow("button", "Back", WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+150, 200, 40,
+                                            hwnd, (HMENU)SettingsHelpButton_Back_id, NULL,  NULL);
+        SettingsHelpIndicator = FALSE;
+    }
+}
+
+void SetDifficulty(){
+     DestroyWindow(SettingsHelpButton_Controls);
+     DestroyWindow(SettingsHelpButton_Help);
+     DestroyWindow(SettingsHelpButton_Fullscreen);
+     DestroyWindow(SettingsHelpButton_Sound);
+     DestroyWindow(SettingsHelpButton_Difficulty);
+     DestroyWindow(SettingsHelpButton_Back);
+
+    if (Difficulty == 1){
+        strcpy(DifficultyButtonName, "Make enemies easier");
+        SettingsHelpIndicator = TRUE;
+        Difficulty = 2;
+    } else if (Difficulty == 2){
+        strcpy(DifficultyButtonName, "Make enemies stronger");
+        SettingsHelpIndicator = TRUE;
+        Difficulty = 1;
+    } else {
+        //TODO: Error handling
+    }
+
+}
+
+void Help(RECT* rct) {
+
+    if (HelpIndicator) {
+
+        WinShow(dc, &brush, &BM);
+
+        HelpButton_Back = CreateWindow("button", "Back", WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+250, 200, 40,
+                                            hwnd, (HMENU)HelpButton_Back_id, NULL,  NULL);
+        HelpIndicator = FALSE;
+
+        }
+}
+
+void Almanac(RECT* rct) {
+
+    if (AlmanacIndicator) {
+
+        WinShow(dc, &brush, &BM);
+
+        AlmanacButton_Back = CreateWindow("button", "Back", WS_VISIBLE | WS_CHILD,
+                                            (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2+250, 200, 40,
+                                            hwnd, (HMENU)AlmanacButton_Back_id, NULL,  NULL);
+        AlmanacIndicator = FALSE;
+
+        }
+}
 
 
 

@@ -16,4 +16,6 @@ BOOL YouLoseIndicator = FALSE;
 BOOL ShootingIndicator = FALSE;
 BOOL MouseShootingIndicator = FALSE;
 BOOL EndlessModeIndicator = FALSE;
-
+BOOL SettingsHelpIndicator = FALSE;
+BOOL HelpIndicator = FALSE;
+BOOL AlmanacIndicator = FALSE;

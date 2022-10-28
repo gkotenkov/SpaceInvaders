@@ -37,14 +37,24 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
 
     HBITMAP memBM = CreateCompatibleBitmap(dc, rct.right-rct.left, rct.bottom-rct.top);
     switch (Player.levelStatus) {
-    case 4:
-        SelectObject(hdcSrc, BossBM);
-        break;
     case 1:
         SelectObject(hdcSrc, Lvl_1_BM);
         break;
+    case 2:
+        SelectObject(hdcSrc, Lvl_2_BM);
+        break;
+    case 3:
+        SelectObject(hdcSrc, Lvl_3_BM);
+        break;
+    case 4:
+        SelectObject(hdcSrc, BossBM);
+        break;
     default:
-        SelectObject(hdcSrc, BM);
+        if (EndlessModeIndicator) {
+            SelectObject(hdcSrc, EndlessModeBM);
+        } else {
+            SelectObject(hdcSrc, BM);
+        }
         break;
     }
     SelectObject(memDC, memBM);
@@ -117,15 +127,79 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         TextOut(memDC, 100, 125, "A   D", 5);
         TextOut(memDC, 1000, 125, "MOVE", 4);
         TextOut(memDC, 100, 250, "SPACE", 5);
-        TextOut(memDC, 100, 300, "LEFT BUTTON", 11);
-        TextOut(memDC, 1000, 275, "SHOOT", 5);
-        TextOut(memDC, 100, 400, "P", 1);
-        TextOut(memDC, 100, 450, "ESCAPE", 6);
-        TextOut(memDC, 1000, 425, "PAUSE", 5);
-        TextOut(memDC, 400, 425, "----------------------------------------", 40);
-        TextOut(memDC, 400, 275, "----------------------------------------", 40);
+        TextOut(memDC, 100, 375, "LEFT BUTTON", 11);
+        TextOut(memDC, 1000, 375, "SINGLE SHOT", 11);
+        TextOut(memDC, 1000, 225, "AUTO-", 5);
+        TextOut(memDC, 1000, 275, "SHOOTING", 8);
+        TextOut(memDC, 100, 475, "P", 1);
+        TextOut(memDC, 100, 525, "ESCAPE", 6);
+        TextOut(memDC, 1000, 500, "PAUSE", 5);
+        TextOut(memDC, 400, 500, "----------------------------------------", 40);
+        TextOut(memDC, 400, 375, "----------------------------------------", 40);
+        TextOut(memDC, 400, 250, "----------------------------------------", 40);
         TextOut(memDC, 400, 125, "----------------------------------------", 40);
 
+    }
+
+    if (AlmanacIndicator){
+        AnyObject SimpleInvader;
+        AnyObject LaserShooter;
+        AnyObject ShieldInvader;
+        AnyObject MotherShip;
+        InitObject(&SimpleInvader, 166, 20, simpleInvader, 0);
+        InitObject(&LaserShooter, 166, 124, laserShooter, 0);
+        InitObject(&ShieldInvader, 166, 208, shieldInvader, 0);
+        InitObject(&MotherShip, 20, 272, motherShip, 0);
+
+        DrawObject(SimpleInvader, memDC);
+        DrawObject(LaserShooter, memDC);
+        DrawObject(ShieldInvader, memDC);
+        DrawObject(MotherShip, memDC);
+
+        SetTextColor(memDC, RGB(0, 255, 0));
+        SetBkMode(memDC, TRANSPARENT);
+        SelectObject(memDC, AlmanacFont);
+        TextOut(memDC, 480, 30, "Simple Invader", 14);
+        TextOut(memDC, 480, 124, "Laser Shooter", 13);
+        TextOut(memDC, 480, 220, "Shield Invader", 14);
+        TextOut(memDC, 480, 350, "MOTHERSHIP", 10);
+        TextOut(memDC, 700, 30, "1 life. Shoots a regular bullet", 31);
+        TextOut(memDC, 700, 124, "1 life. Shoots a laser ray", 26);
+        TextOut(memDC, 700, 220, "5 lifes. Don't shoot", 20);
+        TextOut(memDC, 700, 350, "60 lifes. Uses both types of bullets", 36);
+
+        POINT points[10] = {
+        {194+8, 520},
+        {194+16, 520},
+        {194+24, 520+8},
+        {194+32, 520},
+        {194+40, 520},
+        {194+48, 520+8},
+        {194+48, 520+16},
+        {194+24, 520+40},
+        {194, 520+16},
+        {194, 520+8}
+    };
+    SelectObject(memDC, GetStockObject(DC_BRUSH));
+    SetDCBrushColor(memDC, RGB (255, 0, 0));
+    Polygon(memDC, points, 10);
+    TextOut(memDC, 480, 518, "Life Heart", 10);
+    TextOut(memDC, 700, 504, "Catch it to restore one health point", 37);
+    TextOut(memDC, 700, 530, "You could not have more than 3 HP", 34);
+    }
+
+    if (HelpIndicator){
+
+        SetTextColor(memDC, RGB(0, 255, 0));
+        SetBkMode(memDC, TRANSPARENT);
+        SelectObject(memDC, HelpFont);
+        TextOut(memDC, 20, 50, "In Campaign mode defeat all enemies to pass the level.", 54);
+        TextOut(memDC, 20, 150, "In Endless mode survive as long as you can.", 44);
+        TextOut(memDC, 20, 250, "Button 'Make enemies stronger' doubles enemies' HP, shootig rate and bullets speed.", 83);
+        TextOut(memDC, 20, 300, "Also Life Hearts will spawn twice less often.", 45);
+        SelectObject(memDC, GeneralFont);
+        TextOut(memDC, 275, 450, "Avoid bullets! Survive! Save the galaxy!", 40);
+        TextOut(memDC, 375, 500, "GOOD LUCK, ADVENTURER!", 22);
     }
 
     if (GameIsOn){
@@ -160,7 +234,8 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         SetTextColor(dc, RGB(0, 255, 0));
         SetBkMode(dc, TRANSPARENT);
         SelectObject(dc, GeneralFont);
-        TextOut(dc, strlen(YouWinString)*10/2+400, 400, YouWinString, strlen(YouWinString));
+        SetTextAlign(dc, TA_CENTER);
+        TextOut(dc, 640, 400, YouWinString, strlen(YouWinString));
         BitBlt(dc, 440, 200, 400, 144, YouWinDC, 0, 0, SRCCOPY);
         DeleteObject(YouWinBM);
         DeleteDC(YouWinDC);
@@ -175,7 +250,8 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         SetTextColor(dc, RGB(0, 255, 0));
         SetBkMode(dc, TRANSPARENT);
         SelectObject(dc, GeneralFont);
-        TextOut(dc, strlen(YouLoseString)*10/2+400, 400, YouLoseString, strlen(YouLoseString));
+        SetTextAlign(dc, TA_CENTER);
+        TextOut(dc, 640, 400, YouLoseString, strlen(YouLoseString));
         BitBlt(dc, 440, 200, 400, 144, YouLoseDC, 0, 0, SRCCOPY);
         DeleteObject(YouLoseBM);
         DeleteDC(YouLoseDC);

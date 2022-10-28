@@ -25,12 +25,17 @@ int main() {
 
 
     BM = (HBITMAP)LoadImage(NULL, TEXT("background.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
-    BossBM = (HBITMAP)LoadImage(NULL, TEXT("background_1.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
-    Lvl_1_BM = (HBITMAP)LoadImage(NULL, TEXT("background_2.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
+    BossBM = (HBITMAP)LoadImage(NULL, TEXT("background_4.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
+    Lvl_1_BM = (HBITMAP)LoadImage(NULL, TEXT("background_3.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
+    Lvl_2_BM = (HBITMAP)LoadImage(NULL, TEXT("background_2.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
+    Lvl_3_BM = (HBITMAP)LoadImage(NULL, TEXT("background_6.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
+    EndlessModeBM = (HBITMAP)LoadImage(NULL, TEXT("background_8.bmp"), IMAGE_BITMAP, 0, 0,  LR_LOADFROMFILE);
     brush = CreatePatternBrush(BM);
     GeneralFont = CreateFont(40, 20, 0, 0, 700, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, 0);
-    ScoreFont = CreateFont(18, 9, 0, 0, 700, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, 0);
     OpeningFont = CreateFont(120, 60, 0, 0, 700, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, 0);
+    ScoreFont = CreateFont(18, 9, 0, 0, 700, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, 0);
+    AlmanacFont = CreateFont(30, 15, 0, 0, 700, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, 0);
+    HelpFont = CreateFont(30, 15, 0, 0, 700, 0, 0, 0, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, 0);
 
 	WNDCLASSA wcl;
 		memset(&wcl, 0, sizeof(WNDCLASSA));
@@ -73,9 +78,13 @@ int main() {
                 Opening();
                 MainMenu(&rct);
                 Controls(&rct);
+                SettingsHelp(&rct);
+                Help(&rct);
+                Almanac(&rct);
                 YouWin(&rct);
                 YouLose(&rct);
                 if (GameIsOn){
+                    WinShow(dc, &brush, &BM);
                 }
             }
             ReleaseDC(hwnd, dc);
@@ -98,7 +107,6 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
         if (wParam == 3) {
             if (GameIsOn){
                 WinMove();
-                    WinShow(dc, &brush, &BM);
                 }
         }
         break;
@@ -149,7 +157,7 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
             EndlessMode();
             break;
         case MenuButton_SettingsHelp_id:
-
+            SettingsHelpIndicator = TRUE;
             break;
         case MenuButton_Exit_id:
             PostQuitMessage(0);
@@ -157,11 +165,40 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
         /////////////////////
 
         case SettingsHelpButton_Controls_id:
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_EndlessMode);
-        DestroyWindow(MenuButton_SettingsHelp);
-        DestroyWindow(MenuButton_Exit);
+
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
+
             ControlsIndicator = TRUE;
+            break;
+        case SettingsHelpButton_Help_id:
+
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
+
+            HelpIndicator = TRUE;
+            break;
+        case SettingsHelpButton_Almanac_id:
+
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
+            AlmanacIndicator = TRUE;
+
             break;
         case SettingsHelpButton_Fullscreen_id:
             OnOffFullScreen();
@@ -169,27 +206,55 @@ LRESULT WinProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam){
         case SettingsHelpButton_Sound_id:
             OnOffSound();
             break;
-
+        case SettingsHelpButton_Difficulty_id:
+            SetDifficulty();
+            break;
+        case SettingsHelpButton_Back_id:
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
+            MainMenuIndicator = TRUE;
+            //TODO:
+            break;
+        ///////////////////////////////////
         case PauseButton_BackToGame_id:
             BackToGame();
             break;
         case PauseButton_MainMenu_id:
+             PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
              MainMenuIndicator = TRUE;
+             EndlessModeIndicator = FALSE;
+             Player.levelStatus = 0;
              DestroyWindow(PauseButton_BackToGame);
              DestroyWindow(PauseButton_MainMenu);
              break;
 
         case ControlsButton_Back_id:
-             MainMenuIndicator = TRUE;
+             SettingsHelpIndicator = TRUE;
              DestroyWindow(ControlsButton_Back);
              break;
+        case AlmanacButton_Back_id:
+             SettingsHelpIndicator = TRUE;
+             DestroyWindow(AlmanacButton_Back);
+             break;
+        case HelpButton_Back_id:
+             SettingsHelpIndicator = TRUE;
+             DestroyWindow(HelpButton_Back);
+             break;
         case YouWinButton_MainMenu_id:
+             PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
              MainMenuIndicator = TRUE;
              DestroyWindow(YouWinButton_MainMenu);
              break;
         case YouLoseButton_MainMenu_id:
-            MainMenuIndicator = TRUE;
-            DestroyWindow(YouLoseButton_MainMenu);
+             PlaySound(TEXT("spaceinvaders.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+             MainMenuIndicator = TRUE;
+             EndlessModeIndicator = FALSE;
+             DestroyWindow(YouLoseButton_MainMenu);
             break;
         default:
 

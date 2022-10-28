@@ -96,9 +96,30 @@ void InitObject(AnyObject* obj, float x, float y, int objectType, int id) {
 }
 
 BOOL ObjectCollision(AnyObject bullet, AnyObject character){
-    if (character.objectType == 2){
+    switch (character.objectType){
+    case player:
+        return (((bullet.position.x+bullet.size.x) > character.position.x) && (bullet.position.x < (character.position.x+character.size.x)) &&
+            ((bullet.position.y+bullet.size.y) > character.position.y+32) && (bullet.position.y < (character.position.y+character.size.y)));
+        break;
+    case simpleInvader:
         return (((bullet.position.x+bullet.size.x) > character.position.x+24) && (bullet.position.x < (character.position.x+character.size.x-24)) &&
             ((bullet.position.y+bullet.size.y) > character.position.y+8) && (bullet.position.y < (character.position.y+character.size.y-8)));
+        break;
+    case laserShooter:
+        return (((bullet.position.x+bullet.size.x) > character.position.x+24) && (bullet.position.x < (character.position.x+character.size.x-24)) &&
+            ((bullet.position.y+bullet.size.y) > character.position.y+8) && (bullet.position.y < (character.position.y+character.size.y-8)));
+        break;
+    case shieldInvader:
+        return (((bullet.position.x+bullet.size.x) > character.position.x) && (bullet.position.x < (character.position.x+character.size.x)) &&
+            ((bullet.position.y+bullet.size.y) > character.position.y+16) && (bullet.position.y < (character.position.y+character.size.y-16)));
+        break;
+    case motherShip:
+        return (((bullet.position.x+bullet.size.x) > character.position.x) && (bullet.position.x < (character.position.x+character.size.x)) &&
+            ((bullet.position.y+bullet.size.y) > character.position.y) && (bullet.position.y < (character.position.y+character.size.y-96)));
+        break;
+    }
+    if (character.objectType == 2){
+
     } else {
         return (((bullet.position.x+bullet.size.x) > character.position.x) && (bullet.position.x < (character.position.x+character.size.x)) &&
             ((bullet.position.y+bullet.size.y) > character.position.y) && (bullet.position.y < (character.position.y+character.size.y)));
@@ -210,7 +231,8 @@ void ObjectMove(AnyObject *obj){
                 }
             }
             if (obj->vecSpeed == obj->basicSpeed/4){
-                int shootingIndicator = rand()%(2400/Difficulty);
+                int shootingIndicator = rand()%(1200/Difficulty);
+                if (EndlessModeIndicator) shootingIndicator/=4;
                 if (!shootingIndicator){
                 AddBullet((obj->position.x+obj->size.x/2-ebs.width/2), (obj->position.y), simpleInvaderBullet, ++GlobalID);
                 }
@@ -229,7 +251,8 @@ void ObjectMove(AnyObject *obj){
                         obj->speed.x =0;
                         obj->speed.y =0;
                     levelInitMoveStatus = TRUE;
-                    int shootingIndicator = rand()%(3600/Difficulty);
+                    int shootingIndicator = rand()%(1800/Difficulty);
+                if (EndlessModeIndicator) shootingIndicator/=4;
                     if (!shootingIndicator){
                         obj->animationController = -1;
 
@@ -265,7 +288,7 @@ void ObjectMove(AnyObject *obj){
                         if(ObjectArray[i].lifesRested <= 0 && ObjectArray[i].objectType != motherShip){
                             ObjectArray[i].shouldBeDeleted = TRUE;
                             if (EndlessModeIndicator){
-                                Player.PlayerScore += 100*Player.levelStatus;
+                                Player.PlayerScore += 200;
                                 DeletePositionArrayObject(ObjectArray[i].id);
                             } else {
                             Player.PlayerScore += 100*Player.levelStatus;
@@ -363,7 +386,7 @@ void ObjectMove(AnyObject *obj){
                         }
 
                         if (obj->vecSpeed == obj->basicSpeed/4){
-                            int shootingIndicator = rand()%(4800/Difficulty);
+                            int shootingIndicator = rand()%(480/Difficulty);
                             ++GlobalID;
                                 switch(shootingIndicator){
                                 case 0:
@@ -400,7 +423,7 @@ void ObjectMove(AnyObject *obj){
                     if (obj->animationController > 0) {
                         obj->speed.x = 0;
                         obj->animationController++;
-                        if (obj->animationController > 500){
+                        if (obj->animationController > 200){
                             obj->speed.x = obj->vecSpeed*obj->destController;
                             obj->animationController = -1;
                         }

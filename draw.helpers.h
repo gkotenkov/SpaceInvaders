@@ -306,7 +306,7 @@ void DrawMotherShip (HDC hdc, AnyObject obj) {
 
 
             SelectObject(hdc, GetStockObject(DC_BRUSH));
-            if (obj.lifesRested > 0) {
+            if (obj.lifesRested > 0 && !AlmanacIndicator) {
                 SetDCBrushColor(hdc, RGB(0, 255, 0));
                 POINT points[4] = {
                     {365, 0},
@@ -468,7 +468,11 @@ void DrawSimpleInvader (HDC hdc, AnyObject obj) {
             brush = CreatePatternBrush(BossBM);
             break;
         default:
-            brush = CreatePatternBrush(BM);
+            if (EndlessModeIndicator){
+                brush = CreatePatternBrush(EndlessModeBM);
+            } else {
+                brush = CreatePatternBrush(BM);
+            }
             break;
         }
         SelectObject(hdc, brush);
@@ -596,9 +600,14 @@ void DrawLaserShooter (HDC hdc, AnyObject obj) {
             brush = CreatePatternBrush(BossBM);
             break;
         default:
-            brush = CreatePatternBrush(BM);
+            if (EndlessModeIndicator){
+                brush = CreatePatternBrush(EndlessModeBM);
+            } else {
+                brush = CreatePatternBrush(BM);
+            }
             break;
         }
+
         SelectObject(hdc, brush);
         Rectangle(hdc, obj.position.x+48, obj.position.y+24, obj.position.x+56, obj.position.y+40);
         Rectangle(hdc, obj.position.x+72, obj.position.y+24, obj.position.x+80, obj.position.y+40);
@@ -627,7 +636,7 @@ void DrawShieldInvader (HDC hdc, AnyObject obj) {
     SelectObject(hdc, GetStockObject(DC_BRUSH));
             SetDCBrushColor(hdc, obj.color);
 
-             POINT LaserShooterShape[20] = {
+             POINT ShieldInvaderShape[20] = {
                 {obj.position.x, obj.position.y+24},
                 {obj.position.x+24, obj.position.y+24},
                 {obj.position.x+24, obj.position.y+16},
@@ -649,7 +658,7 @@ void DrawShieldInvader (HDC hdc, AnyObject obj) {
                 {obj.position.x+24, obj.position.y+40},
                 {obj.position.x, obj.position.y+40},
                 };
-            Polygon(hdc, LaserShooterShape, 20);
+            Polygon(hdc, ShieldInvaderShape, 20);
 
             SelectObject(hdc, GetStockObject(DC_BRUSH));
 

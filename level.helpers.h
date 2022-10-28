@@ -147,7 +147,7 @@ void InitLevel_4() {
 
     lvl_DrawAbility = 4;
     WinShow(dc, &brush, &BM);
-    Sleep(3000);
+    Sleep(8000);
     lvl_DrawAbility = 0;
 }
 
