@@ -117,12 +117,9 @@ BOOL ObjectCollision(AnyObject bullet, AnyObject character){
         return (((bullet.position.x+bullet.size.x) > character.position.x) && (bullet.position.x < (character.position.x+character.size.x)) &&
             ((bullet.position.y+bullet.size.y) > character.position.y) && (bullet.position.y < (character.position.y+character.size.y-96)));
         break;
-    }
-    if (character.objectType == 2){
-
-    } else {
-        return (((bullet.position.x+bullet.size.x) > character.position.x) && (bullet.position.x < (character.position.x+character.size.x)) &&
-            ((bullet.position.y+bullet.size.y) > character.position.y) && (bullet.position.y < (character.position.y+character.size.y)));
+    default:
+        return FALSE;
+        break;
     }
 }
 
@@ -368,6 +365,7 @@ void ObjectMove(AnyObject *obj){
                 obj->position.y+=obj->speed.y;
                 break;
         case motherShip:
+            printf("%d\n", obj->animationController);
                 if (obj->lifesRested > 0){
                     if (obj->animationController < 0){
 
@@ -387,31 +385,31 @@ void ObjectMove(AnyObject *obj){
 
                         if (obj->vecSpeed == obj->basicSpeed/4){
                             int shootingIndicator = rand()%(480/Difficulty);
-                            ++GlobalID;
+
                                 switch(shootingIndicator){
                                 case 0:
                                 case 1:
-                                    AddBullet((obj->position.x+112), (obj->position.y+160), simpleInvaderBullet, GlobalID);
+                                    AddBullet((obj->position.x+112), (obj->position.y+160), simpleInvaderBullet, ++GlobalID);
                                     break;
                                 case 2:
                                 case 3:
-                                    AddBullet((obj->position.x+192), (obj->position.y+160), simpleInvaderBullet, GlobalID);
+                                    AddBullet((obj->position.x+192), (obj->position.y+160), simpleInvaderBullet, ++GlobalID);
                                     break;
                                 case 4:
                                 case 5:
-                                    AddBullet((obj->position.x+272), (obj->position.y+160), simpleInvaderBullet, GlobalID);
+                                    AddBullet((obj->position.x+272), (obj->position.y+160), simpleInvaderBullet, ++GlobalID);
                                     break;
                                 case 6:
                                     obj->animationController = 1;
                                     obj->speed.x = 0;
-                                    AddBullet((obj->position.x+48), (obj->position.y+208), laserShooterBullet, GlobalID);
-                                    AddBullet((obj->position.x+336), (obj->position.y+208), laserShooterBullet, GlobalID);
+                                    AddBullet((obj->position.x+48), (obj->position.y+208), laserShooterBullet, obj->id);
+                                    AddBullet((obj->position.x+336), (obj->position.y+208), laserShooterBullet, obj->id);
                                     break;
                                 case 7:
-                                    InitObject(NewArrayObject(), -192-(rand()%5*256), 350+rand()%2*128, 2*(rand()%2+1), GlobalID);
+                                    InitObject(NewArrayObject(), -192-(rand()%5*256), 350+rand()%2*128, 2*(rand()%2+1), ++GlobalID);
                                     break;
                                 case 8:
-                                    InitObject(NewArrayObject(), 1344+(rand()%5*256), 350+rand()%2*128, 2*(rand()%2+1), GlobalID);
+                                    InitObject(NewArrayObject(), 1344+(rand()%5*256), 350+rand()%2*128, 2*(rand()%2+1), ++GlobalID);
                                     break;
                                 default:
 
@@ -463,7 +461,6 @@ void CreateRandomEnemy(){
     float x, y;
     BOOL PositionIsOccupied = FALSE;
     int random = rand()%(120/Difficulty);
-    ++GlobalID;
     switch (random){
     case 1: ;
         x = -192-(rand()%3*192);
@@ -474,7 +471,7 @@ void CreateRandomEnemy(){
             }
         }
         if (!PositionIsOccupied){
-            InitObject(NewArrayObject(), x, y, 2*(rand()%3+1), GlobalID);
+            InitObject(NewArrayObject(), x, y, 2*(rand()%3+1), ++GlobalID);
             NewPositionArrayObject(x, y, GlobalID);
         }
         break;
@@ -488,7 +485,7 @@ void CreateRandomEnemy(){
             }
         }
         if (!PositionIsOccupied){
-            InitObject(NewArrayObject(), x, y, 2*(rand()%3+1), GlobalID);
+            InitObject(NewArrayObject(), x, y, 2*(rand()%3+1), ++GlobalID);
             NewPositionArrayObject(x, y, GlobalID);
 
         }

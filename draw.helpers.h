@@ -319,23 +319,23 @@ void DrawMotherShip (HDC hdc, AnyObject obj) {
                 Rectangle(hdc, 400, 5, 400+8/Difficulty*obj.lifesRested, 25);
             }
 
-            if (obj.lifesRested > 24){
+            if ((int)(obj.lifesRested/Difficulty) > 48){
                SetDCBrushColor(hdc, RGB(255, 0, 0));
             Rectangle(hdc, obj.position.x+16, obj.position.y+128, obj.position.x+32, obj.position.y+160);
             Rectangle(hdc, obj.position.x+384, obj.position.y+128, obj.position.x+400, obj.position.y+160);
-            } else if (obj.lifesRested > 18){
+            } else if ((int)(obj.lifesRested/Difficulty) > 36){
                SetDCBrushColor(hdc, RGB(255, 128, 0));
             Rectangle(hdc, obj.position.x+16, obj.position.y+128, obj.position.x+32, obj.position.y+160);
             Rectangle(hdc, obj.position.x+384, obj.position.y+128, obj.position.x+400, obj.position.y+160);
-            } else if (obj.lifesRested > 12){
+            } else if ((int)(obj.lifesRested/Difficulty) > 24){
                SetDCBrushColor(hdc, RGB(255, 255, 0));
             Rectangle(hdc, obj.position.x+16, obj.position.y+128, obj.position.x+32, obj.position.y+160);
             Rectangle(hdc, obj.position.x+384, obj.position.y+128, obj.position.x+400, obj.position.y+160);
-            } else if (obj.lifesRested > 6){
+            } else if ((int)(obj.lifesRested/Difficulty) > 12){
                SetDCBrushColor(hdc, RGB(128, 255, 0));
             Rectangle(hdc, obj.position.x+16, obj.position.y+128, obj.position.x+32, obj.position.y+160);
             Rectangle(hdc, obj.position.x+384, obj.position.y+128, obj.position.x+400, obj.position.y+160);
-            } else if (obj.lifesRested > 0){
+            } else if ((int)(obj.lifesRested/Difficulty) > 0){
                SetDCBrushColor(hdc, RGB(0, 255, 0));
             Rectangle(hdc, obj.position.x+16, obj.position.y+128, obj.position.x+32, obj.position.y+160);
             Rectangle(hdc, obj.position.x+384, obj.position.y+128, obj.position.x+400, obj.position.y+160);
@@ -662,26 +662,19 @@ void DrawShieldInvader (HDC hdc, AnyObject obj) {
 
             SelectObject(hdc, GetStockObject(DC_BRUSH));
 
-            switch(obj.lifesRested){
-            case 5:
+            if ((int)(obj.lifesRested/Difficulty) > 4){
                 SetDCBrushColor(hdc, RGB(255, 0, 0));
-                break;
-            case 4:
+            } else if ((int)(obj.lifesRested/Difficulty) > 3) {
                 SetDCBrushColor(hdc, RGB(255, 128, 0));
-                break;
-            case 3:
+            } else if ((int)(obj.lifesRested/Difficulty) > 2) {
                 SetDCBrushColor(hdc, RGB(255, 255, 0));
-                break;
-            case 2:
+            } else if ((int)(obj.lifesRested/Difficulty) > 1) {
                 SetDCBrushColor(hdc, RGB(128, 255, 0));
-                break;
-            case 1:
+            } else if ((int)(obj.lifesRested/Difficulty) > 0) {
                 SetDCBrushColor(hdc, RGB(0, 255, 0));
-                break;
-            default:
-                break;
-
             }
+
+
             Rectangle(hdc, obj.position.x+48, obj.position.y+24, obj.position.x+80, obj.position.y+40);
 }
 

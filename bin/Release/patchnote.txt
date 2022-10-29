@@ -1,0 +1,29 @@
+Fixes:
+	{
+	1. Stable FPS was set (The speed of objects does not depend on the CPU's frequency);
+	2. Pressing 'ESCAPE' or 'P' now create pause menu only during the game process;
+	3. Fire rate by pressing 'LBUTTON' is not more then 4 shots per second;
+	4. Controlls sreen text was fixed;
+	5. Fixed 'MAXIMIZE WINDOW' button to enable proper fullscreen mode;
+	6. An opportunity to change window size manually was deleted;
+	}
+Features:
+	{
+	1. Added an autoshooting mode;
+	2. Added lost-a-life animation;
+	3. Added  boss HB decrease bar;
+	4. New boss level music;
+	5. 
+	}
+Refactoring:
+	{
+	1. Replace draw functions into draw.helpers.h 
+	2. Replace typedefs into global.types.h
+	3. Replace indicators into global.indicators.h
+	4. Replace global variables into global.variables.h
+	5. Added a new typedef enum for objects' types. Refactor types of objects in enum way. 
+}
+Balance:
+	{
+	1.
+	}

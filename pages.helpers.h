@@ -29,10 +29,11 @@ void BackToGame(){
 void OnOffFullScreen(){
     DestroyWindow(SettingsHelpButton_Controls);
     DestroyWindow(SettingsHelpButton_Help);
+    DestroyWindow(SettingsHelpButton_Almanac);
     DestroyWindow(SettingsHelpButton_Fullscreen);
     DestroyWindow(SettingsHelpButton_Sound);
     DestroyWindow(SettingsHelpButton_Difficulty);
-    DestroyWindow(SettingsHelpButton_Back);
+    DestroyWindow(SettingsHelpButton_Back);;
     if (!FullScreen){
         DEVMODE dm;
         memset(&dm, 0 ,sizeof(DEVMODE));
@@ -46,10 +47,13 @@ void OnOffFullScreen(){
         SetWindowPos(hwnd, HWND_TOP, 0, 0, 1280, 720, SWP_SHOWWINDOW);
         FullScreen = TRUE;
         strcpy(FullScreenButtonName, "Disable fullscreen");
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_EndlessMode);
-        DestroyWindow(MenuButton_SettingsHelp);
-        DestroyWindow(MenuButton_Exit);
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
         SettingsHelpIndicator = TRUE;
     } else {
         ChangeDisplaySettings(0, 0);
@@ -57,21 +61,25 @@ void OnOffFullScreen(){
         SetWindowPos(hwnd, HWND_TOP, 360, 180, 1280, 720, SWP_SHOWWINDOW);
         FullScreen = FALSE;
         strcpy(FullScreenButtonName, "Enable fullscreen");
-        DestroyWindow(MenuButton_NewGame);
-        DestroyWindow(MenuButton_EndlessMode);
-        DestroyWindow(MenuButton_SettingsHelp);
-        DestroyWindow(MenuButton_Exit);
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
         SettingsHelpIndicator = TRUE;
     }
 }
 
 void OnOffSound() {
-    DestroyWindow(SettingsHelpButton_Controls);
-    DestroyWindow(SettingsHelpButton_Help);
-    DestroyWindow(SettingsHelpButton_Fullscreen);
-    DestroyWindow(SettingsHelpButton_Sound);
-    DestroyWindow(SettingsHelpButton_Difficulty);
-    DestroyWindow(SettingsHelpButton_Back);
+        DestroyWindow(SettingsHelpButton_Controls);
+        DestroyWindow(SettingsHelpButton_Help);
+        DestroyWindow(SettingsHelpButton_Almanac);
+        DestroyWindow(SettingsHelpButton_Fullscreen);
+        DestroyWindow(SettingsHelpButton_Sound);
+        DestroyWindow(SettingsHelpButton_Difficulty);
+        DestroyWindow(SettingsHelpButton_Back);
 
     if (SoundIndicator){
         strcpy(SoundButtonName, "Enable sound");
@@ -117,6 +125,13 @@ void MainMenu(RECT* rct) {
         DestroyWindow(MenuButton_EndlessMode);
         DestroyWindow(MenuButton_SettingsHelp);
         DestroyWindow(MenuButton_Exit);
+        DestroyWindow(SettingsHelpButton_Controls);
+        DestroyWindow(SettingsHelpButton_Help);
+        DestroyWindow(SettingsHelpButton_Almanac);
+        DestroyWindow(SettingsHelpButton_Fullscreen);
+        DestroyWindow(SettingsHelpButton_Sound);
+        DestroyWindow(SettingsHelpButton_Difficulty);
+        DestroyWindow(SettingsHelpButton_Back);
 
         MenuButton_NewGame = CreateWindow("button", "Campaign", WS_VISIBLE | WS_CHILD,
                                                (rct->right-rct->left)/2-100, (rct->bottom-rct->top)/2-100, 200, 40,
@@ -187,7 +202,9 @@ void YouLose(RECT* rct){
 }
 
 void EndlessMode (){
-    PlaySound(TEXT("endless_mode_sound.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+    if (SoundIndicator){
+        PlaySound(TEXT("endless_mode_sound.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+    }
     ObjectArray = NULL;
     ObjectArrayCounter = 0;
     GameIsOn = TRUE;
@@ -242,12 +259,13 @@ void SettingsHelp(RECT* rct) {
 }
 
 void SetDifficulty(){
-     DestroyWindow(SettingsHelpButton_Controls);
-     DestroyWindow(SettingsHelpButton_Help);
-     DestroyWindow(SettingsHelpButton_Fullscreen);
-     DestroyWindow(SettingsHelpButton_Sound);
-     DestroyWindow(SettingsHelpButton_Difficulty);
-     DestroyWindow(SettingsHelpButton_Back);
+        DestroyWindow(SettingsHelpButton_Controls);
+        DestroyWindow(SettingsHelpButton_Help);
+        DestroyWindow(SettingsHelpButton_Almanac);
+        DestroyWindow(SettingsHelpButton_Fullscreen);
+        DestroyWindow(SettingsHelpButton_Sound);
+        DestroyWindow(SettingsHelpButton_Difficulty);
+        DestroyWindow(SettingsHelpButton_Back);
 
     if (Difficulty == 1){
         strcpy(DifficultyButtonName, "Make enemies easier");
@@ -266,6 +284,13 @@ void SetDifficulty(){
 void Help(RECT* rct) {
 
     if (HelpIndicator) {
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
 
         WinShow(dc, &brush, &BM);
 
@@ -280,6 +305,14 @@ void Help(RECT* rct) {
 void Almanac(RECT* rct) {
 
     if (AlmanacIndicator) {
+
+            DestroyWindow(SettingsHelpButton_Controls);
+            DestroyWindow(SettingsHelpButton_Help);
+            DestroyWindow(SettingsHelpButton_Almanac);
+            DestroyWindow(SettingsHelpButton_Fullscreen);
+            DestroyWindow(SettingsHelpButton_Sound);
+            DestroyWindow(SettingsHelpButton_Difficulty);
+            DestroyWindow(SettingsHelpButton_Back);
 
         WinShow(dc, &brush, &BM);
 

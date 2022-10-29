@@ -35,6 +35,7 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
     HDC hdcSrc = CreateCompatibleDC(dc);
     HDC memDC = CreateCompatibleDC(dc);
 
+
     HBITMAP memBM = CreateCompatibleBitmap(dc, rct.right-rct.left, rct.bottom-rct.top);
     switch (Player.levelStatus) {
     case 1:
@@ -111,12 +112,14 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         Rectangle(memDC, 435, 605, OpeningLoading, 635);
         SetTextColor(memDC, RGB(0, 255, 0));
         SetBkMode(memDC, TRANSPARENT);
+        SetTextAlign(memDC, TA_CENTER);
         HFONT hfont = SelectObject(memDC, GeneralFont);
-        TextOut(memDC, 420, 235, "by GK DEVELOPMENT", 17);
+        TextOut(memDC, 640, 235, "by GK DEVELOPMENT", 17);
         DeleteObject(hfont);
         SetBkMode(memDC, TRANSPARENT);
         SelectObject(memDC, OpeningFont);
-        TextOut(memDC, 100, 125, "SPACE INVADERS", 14);
+        SetTextAlign(memDC, TA_CENTER);
+        TextOut(memDC, 640, 125, "SPACE INVADERS", 14);
     }
 
     if (ControlsIndicator){
@@ -193,13 +196,14 @@ void WinShow(HDC dc, HBRUSH* Abrush, HBITMAP* PBM){
         SetTextColor(memDC, RGB(0, 255, 0));
         SetBkMode(memDC, TRANSPARENT);
         SelectObject(memDC, HelpFont);
-        TextOut(memDC, 20, 50, "In Campaign mode defeat all enemies to pass the level.", 54);
-        TextOut(memDC, 20, 150, "In Endless mode survive as long as you can.", 44);
-        TextOut(memDC, 20, 250, "Button 'Make enemies stronger' doubles enemies' HP, shootig rate and bullets speed.", 83);
-        TextOut(memDC, 20, 300, "Also Life Hearts will spawn twice less often.", 45);
+        SetTextAlign(memDC, TA_CENTER);
+        TextOut(memDC, 640, 50, "In Campaign mode defeat all enemies to pass the level.", 54);
+        TextOut(memDC, 640, 150, "In Endless mode survive as long as you can.", 44);
+        TextOut(memDC, 640, 250, "Button 'Make enemies stronger' doubles enemies' HP, shootig rate and bullets speed.", 83);
+        TextOut(memDC, 640, 300, "Also Life Hearts will spawn twice less often.", 45);
         SelectObject(memDC, GeneralFont);
-        TextOut(memDC, 275, 450, "Avoid bullets! Survive! Save the galaxy!", 40);
-        TextOut(memDC, 375, 500, "GOOD LUCK, ADVENTURER!", 22);
+        TextOut(memDC, 640, 450, "Avoid bullets! Survive! Save the galaxy!", 40);
+        TextOut(memDC, 640, 500, "GOOD LUCK, ADVENTURER!", 22);
     }
 
     if (GameIsOn){

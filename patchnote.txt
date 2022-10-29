@@ -6,24 +6,34 @@ Fixes:
 	4. Controlls sreen text was fixed;
 	5. Fixed 'MAXIMIZE WINDOW' button to enable proper fullscreen mode;
 	6. An opportunity to change window size manually was deleted;
+	7. Fixed enemies' hitboxes;
+	8. When LaserShooter dies, the laser is deliting;
+	9. Fixed score text;
 	}
 Features:
 	{
 	1. Added an autoshooting mode;
 	2. Added lost-a-life animation;
-	3. Added  boss HB decrease bar;
-	4. New boss level music;
-	5. 
+	3. Added  boss HP decrease bar;
+	4. New boss level music (For Oleg's order);
+	5. New backgrounds for every level;
+	6. Added endless game mode;
+	7. Settings in separated menu;
+	8. Almanac and help was added;
+	9. Added possibility to choose difficulty;
+	10. Added lifehearts, spawned durind the game;
+	11. New more suitable HUD;
+	12. Added icon for the game label;
 	}
 Refactoring:
 	{
-	1. Replace draw functions into draw.helpers.h 
-	2. Replace typedefs into global.types.h
-	3. Replace indicators into global.indicators.h
-	4. Replace global variables into global.variables.h
+	1. The code was replaced to different files;
+	2. Work with pre-processor;
+ 	3. Draw functions was refactored;
+	4. Replaced some lines from main into WM_CREATE message;
 	5. Added a new typedef enum for objects' types. Refactor types of objects in enum way. 
 }
 Balance:
 	{
-	1.
+	1. Rebalance enemies' speed, fire rate, healthpoints and buletts speed;
 	}

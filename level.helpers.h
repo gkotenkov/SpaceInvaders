@@ -138,7 +138,9 @@ void InitLevel_3() {
 
 void InitLevel_4() {
 
-    PlaySound(TEXT("boss_music.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+    if (SoundIndicator){
+        PlaySound(TEXT("boss_music.wav"), NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+    }
     levelInitMoveStatus = FALSE;
     Player.levelStatus = 4;
     Player.position.x = 576;
@@ -147,7 +149,7 @@ void InitLevel_4() {
 
     lvl_DrawAbility = 4;
     WinShow(dc, &brush, &BM);
-    Sleep(8000);
+    Sleep(4000);
     lvl_DrawAbility = 0;
 }
 
